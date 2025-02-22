@@ -1,0 +1,12 @@
+# ignore all dotfiles/folders (like .archive folders)
+**/.*
+!.gitignore
+
+# build artifacts
+build
+docs
+*.sh
+
+GTAGS
+GRTAGS
+GPATH
