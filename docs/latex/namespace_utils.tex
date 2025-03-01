@@ -1,0 +1,29 @@
+\doxysection{Utils Namespace Reference}
+\hypertarget{namespace_utils}{}\label{namespace_utils}\index{Utils@{Utils}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_config_file}{Config\+File}}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_gnuplot}{Gnuplot}}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_logger}{Logger}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{namespace_utils_ac1550dfbef43f969a8891c58dd994ade}{File\+Name\+From\+Abs\+Path}} (const char \texorpdfstring{$\ast$}{*}file\+\_\+path\+\_\+cstr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This is where the rest of the miscellaneous utility functions not delegated to a class will find themselves. 
+
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_utils_ac1550dfbef43f969a8891c58dd994ade}\index{Utils@{Utils}!FileNameFromAbsPath@{FileNameFromAbsPath}}
+\index{FileNameFromAbsPath@{FileNameFromAbsPath}!Utils@{Utils}}
+\doxysubsubsection{\texorpdfstring{FileNameFromAbsPath()}{FileNameFromAbsPath()}}
+{\footnotesize\ttfamily \label{namespace_utils_ac1550dfbef43f969a8891c58dd994ade} 
+std\+::string Utils\+::\+File\+Name\+From\+Abs\+Path (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{file\+\_\+path\+\_\+cstr}{}\end{DoxyParamCaption})}
+
+Takes in a full, absolute path, and grabs only the actual file name, i.\+e. the last part of the path. The full path can be cumbersome and occupy far too much space in a terminal depending on where the project is located -- this is a way to handle that. 

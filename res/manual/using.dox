@@ -1,0 +1,9 @@
+/** \page Using
+
+# Configuration
+
+All input parameters are specified in the configuration file found at `res/config.in`. Comments are placed within that file describing what each parameter signifies, though I will reiterate them here. More details are found in the PDF manual.
+
+- **ECM**: Determines the center of mass energy of the collision, i.e. each beam in the accelerator is given an energy of `ECM/2`.
+
+*/

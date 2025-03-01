@@ -1,0 +1,172 @@
+\doxysection{W\+:/include/\+Utils.hpp File Reference}
+\hypertarget{_utils_8hpp}{}\label{_utils_8hpp}\index{W:/include/Utils.hpp@{W:/include/Utils.hpp}}
+{\ttfamily \#include $<$cstdint$>$}\newline
+{\ttfamily \#include $<$string$>$}\newline
+{\ttfamily \#include $<$unordered\+\_\+map$>$}\newline
+{\ttfamily \#include $<$fstream$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_config_file}{Utils\+::\+Config\+File}}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_logger}{Utils\+::\+Logger}}
+\item 
+class \mbox{\hyperlink{class_utils_1_1_gnuplot}{Utils\+::\+Gnuplot}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespace_utils}{Utils}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_utils_8hpp_a34995b955465f6bbb37c359173d50477}\label{_utils_8hpp_a34995b955465f6bbb37c359173d50477} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+RED}~"{}\textbackslash{}x1b\mbox{[}31m"{}
+\item 
+\Hypertarget{_utils_8hpp_a966c72d8d733c7734c6c784753d894c7}\label{_utils_8hpp_a966c72d8d733c7734c6c784753d894c7} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+GREEN}~"{}\textbackslash{}x1b\mbox{[}32m"{}
+\item 
+\Hypertarget{_utils_8hpp_a5a123b382640b3aa65dd5db386002fbc}\label{_utils_8hpp_a5a123b382640b3aa65dd5db386002fbc} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+YELLOW}~"{}\textbackslash{}x1b\mbox{[}33m"{}
+\item 
+\Hypertarget{_utils_8hpp_aca16e6a49eb51333c5fd3eee19487315}\label{_utils_8hpp_aca16e6a49eb51333c5fd3eee19487315} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+BLUE}~"{}\textbackslash{}x1b\mbox{[}34m"{}
+\item 
+\Hypertarget{_utils_8hpp_acb30614ba1535da5b9d0c490b3c10515}\label{_utils_8hpp_acb30614ba1535da5b9d0c490b3c10515} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+MAGENTA}~"{}\textbackslash{}x1b\mbox{[}35m"{}
+\item 
+\Hypertarget{_utils_8hpp_a8d0b0043e152438bb39b918a1f98c65f}\label{_utils_8hpp_a8d0b0043e152438bb39b918a1f98c65f} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+CYAN}~"{}\textbackslash{}x1b\mbox{[}36m"{}
+\item 
+\Hypertarget{_utils_8hpp_a92a364c2b863dde1a024a77eac2a5b3b}\label{_utils_8hpp_a92a364c2b863dde1a024a77eac2a5b3b} 
+\#define {\bfseries ANSI\+\_\+\+COLOR\+\_\+\+RESET}~"{}\textbackslash{}x1b\mbox{[}0m"{}
+\item 
+\Hypertarget{_utils_8hpp_aea92c40e2365fce7761beba4db856c02}\label{_utils_8hpp_aea92c40e2365fce7761beba4db856c02} 
+\#define {\bfseries CFG\+\_\+\+DEFAULT\+\_\+\+FILE\+\_\+\+PATH}~"{}./res/config.\+in"{}
+\item 
+\#define \mbox{\hyperlink{_utils_8hpp_a5fec8cc196858c13d22f196809a7bd19}{GLOBAL\+\_\+\+LOGGER\+\_\+\+FILE\+\_\+\+PATH}}~"{}./log.\+out"{}
+\item 
+\Hypertarget{_utils_8hpp_a2f9c2299cdb94992461f650be35095bb}\label{_utils_8hpp_a2f9c2299cdb94992461f650be35095bb} 
+\#define {\bfseries GNUPLOT\+\_\+\+SCRIPT\+\_\+\+PATH}~"{}./res/plot.\+dem"{}
+\begin{DoxyCompactList}\small\item\em The place where the Gnuplot script is stored. \end{DoxyCompactList}\item 
+\#define \mbox{\hyperlink{_utils_8hpp_ad4a9117ce894e3319e903142347a0f63}{LOG\+\_\+\+ERROR}}(...)
+\item 
+\#define \mbox{\hyperlink{_utils_8hpp_afef5ff03ea272d388345cf47148953d4}{LOG\+\_\+\+WARNING}}(...)
+\item 
+\#define \mbox{\hyperlink{_utils_8hpp_a378e28bfcb78d17285210d6bbb70a083}{LOG\+\_\+\+INFO}}(...)
+\item 
+\#define \mbox{\hyperlink{_utils_8hpp_a754b3d074e0af4ad3c7b918dd77ecb2d}{LOG\+\_\+\+DEBUG}}(...)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{_utils_8hpp_ae3702327b5f47e83b431e22b33da7b58}\label{_utils_8hpp_ae3702327b5f47e83b431e22b33da7b58} 
+typedef int8\+\_\+t {\bfseries i8}
+\item 
+\Hypertarget{_utils_8hpp_ad309dbcaeea13aa602d686964156ea0b}\label{_utils_8hpp_ad309dbcaeea13aa602d686964156ea0b} 
+typedef int16\+\_\+t {\bfseries i16}
+\item 
+\Hypertarget{_utils_8hpp_a48d6cd8e4135fb2ff7e7f2dac84089ec}\label{_utils_8hpp_a48d6cd8e4135fb2ff7e7f2dac84089ec} 
+typedef int32\+\_\+t {\bfseries i32}
+\item 
+\Hypertarget{_utils_8hpp_a85cb35fbe5bf2961d7ad5f26814a91a2}\label{_utils_8hpp_a85cb35fbe5bf2961d7ad5f26814a91a2} 
+typedef int64\+\_\+t {\bfseries i64}
+\item 
+\Hypertarget{_utils_8hpp_a92c50087ca0e64fa93fc59402c55f8ca}\label{_utils_8hpp_a92c50087ca0e64fa93fc59402c55f8ca} 
+typedef uint8\+\_\+t {\bfseries u8}
+\item 
+\Hypertarget{_utils_8hpp_ace9d960e74685e2cd84b36132dbbf8aa}\label{_utils_8hpp_ace9d960e74685e2cd84b36132dbbf8aa} 
+typedef uint16\+\_\+t {\bfseries u16}
+\item 
+\Hypertarget{_utils_8hpp_afaa62991928fb9fb18ff0db62a040aba}\label{_utils_8hpp_afaa62991928fb9fb18ff0db62a040aba} 
+typedef uint32\+\_\+t {\bfseries u32}
+\item 
+\Hypertarget{_utils_8hpp_a3f7e2bcbb0b4c338f3c4f6c937cd4234}\label{_utils_8hpp_a3f7e2bcbb0b4c338f3c4f6c937cd4234} 
+typedef uint64\+\_\+t {\bfseries u64}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std\+::string \mbox{\hyperlink{namespace_utils_ac1550dfbef43f969a8891c58dd994ade}{Utils\+::\+File\+Name\+From\+Abs\+Path}} (const char \texorpdfstring{$\ast$}{*}file\+\_\+path\+\_\+cstr)
+\item 
+std\+::string \mbox{\hyperlink{_utils_8hpp_a6e74837a58e47af76771abcc036d57c8}{Utils\+::\+INTERNAL\+::\+\_\+\+\_\+collect\+Log\+Args}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_utils_1_1_logger}{Logger}} \mbox{\hyperlink{_utils_8hpp_aa1cccf9e9a15521138d80144d82e2ddb}{Utils\+::\+INTERNAL\+::\+GLOBAL\+\_\+\+LOGGER}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{_utils_8hpp_a5fec8cc196858c13d22f196809a7bd19}\index{Utils.hpp@{Utils.hpp}!GLOBAL\_LOGGER\_FILE\_PATH@{GLOBAL\_LOGGER\_FILE\_PATH}}
+\index{GLOBAL\_LOGGER\_FILE\_PATH@{GLOBAL\_LOGGER\_FILE\_PATH}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{GLOBAL\_LOGGER\_FILE\_PATH}{GLOBAL\_LOGGER\_FILE\_PATH}}
+{\footnotesize\ttfamily \label{_utils_8hpp_a5fec8cc196858c13d22f196809a7bd19} 
+\#define GLOBAL\+\_\+\+LOGGER\+\_\+\+FILE\+\_\+\+PATH~"{}./log.\+out"{}}
+
+File path for the global logger to print out to. \Hypertarget{_utils_8hpp_a754b3d074e0af4ad3c7b918dd77ecb2d}\index{Utils.hpp@{Utils.hpp}!LOG\_DEBUG@{LOG\_DEBUG}}
+\index{LOG\_DEBUG@{LOG\_DEBUG}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{LOG\_DEBUG}{LOG\_DEBUG}}
+{\footnotesize\ttfamily \label{_utils_8hpp_a754b3d074e0af4ad3c7b918dd77ecb2d} 
+\#define LOG\+\_\+\+DEBUG(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{logDebug(\_\_FUNCTION\_\_,\ \_\_FILE\_\_,\ \_\_LINE\_\_,\ Utils::INTERNAL::\_\_collectLogArgs(\_\_VA\_ARGS\_\_,\ NULL))}
+
+\end{DoxyCode}
+\Hypertarget{_utils_8hpp_ad4a9117ce894e3319e903142347a0f63}\index{Utils.hpp@{Utils.hpp}!LOG\_ERROR@{LOG\_ERROR}}
+\index{LOG\_ERROR@{LOG\_ERROR}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{LOG\_ERROR}{LOG\_ERROR}}
+{\footnotesize\ttfamily \label{_utils_8hpp_ad4a9117ce894e3319e903142347a0f63} 
+\#define LOG\+\_\+\+ERROR(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{logError(\_\_FUNCTION\_\_,\ \_\_FILE\_\_,\ \_\_LINE\_\_,\ Utils::INTERNAL::\_\_collectLogArgs(\_\_VA\_ARGS\_\_,\ NULL))}
+
+\end{DoxyCode}
+\Hypertarget{_utils_8hpp_a378e28bfcb78d17285210d6bbb70a083}\index{Utils.hpp@{Utils.hpp}!LOG\_INFO@{LOG\_INFO}}
+\index{LOG\_INFO@{LOG\_INFO}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{LOG\_INFO}{LOG\_INFO}}
+{\footnotesize\ttfamily \label{_utils_8hpp_a378e28bfcb78d17285210d6bbb70a083} 
+\#define LOG\+\_\+\+INFO(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{logInfo(\_\_FUNCTION\_\_,\ \_\_FILE\_\_,\ \_\_LINE\_\_,\ Utils::INTERNAL::\_\_collectLogArgs(\_\_VA\_ARGS\_\_,\ NULL))}
+
+\end{DoxyCode}
+\Hypertarget{_utils_8hpp_afef5ff03ea272d388345cf47148953d4}\index{Utils.hpp@{Utils.hpp}!LOG\_WARNING@{LOG\_WARNING}}
+\index{LOG\_WARNING@{LOG\_WARNING}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{LOG\_WARNING}{LOG\_WARNING}}
+{\footnotesize\ttfamily \label{_utils_8hpp_afef5ff03ea272d388345cf47148953d4} 
+\#define LOG\+\_\+\+WARNING(\begin{DoxyParamCaption}\item[{}]{}...{}\end{DoxyParamCaption})}
+
+{\bfseries Value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{logWarning(\_\_FUNCTION\_\_,\ \_\_FILE\_\_,\ \_\_LINE\_\_,\ Utils::INTERNAL::\_\_collectLogArgs(\_\_VA\_ARGS\_\_,\ NULL))}
+
+\end{DoxyCode}
+
+
+\doxysubsection{Function Documentation}
+\Hypertarget{_utils_8hpp_a6e74837a58e47af76771abcc036d57c8}\index{Utils.hpp@{Utils.hpp}!\_\_collectLogArgs@{\_\_collectLogArgs}}
+\index{\_\_collectLogArgs@{\_\_collectLogArgs}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{\_\_collectLogArgs()}{\_\_collectLogArgs()}}
+{\footnotesize\ttfamily \label{_utils_8hpp_a6e74837a58e47af76771abcc036d57c8} 
+std\+::string Utils\+::\+INTERNAL\+::\+\_\+\+\_\+collect\+Log\+Args (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format}{, }\item[{}]{...}{}\end{DoxyParamCaption})}
+
+Internal function that collects the variadic arguments passed to the logging functions. The format of the variadic arguments is just like that of {\ttfamily printf}. Note that std\+::string arguments will need to be passed via the {\ttfamily c\+\_\+str()} method. 
+
+\doxysubsection{Variable Documentation}
+\Hypertarget{_utils_8hpp_aa1cccf9e9a15521138d80144d82e2ddb}\index{Utils.hpp@{Utils.hpp}!GLOBAL\_LOGGER@{GLOBAL\_LOGGER}}
+\index{GLOBAL\_LOGGER@{GLOBAL\_LOGGER}!Utils.hpp@{Utils.hpp}}
+\doxysubsubsection{\texorpdfstring{GLOBAL\_LOGGER}{GLOBAL\_LOGGER}}
+{\footnotesize\ttfamily \label{_utils_8hpp_aa1cccf9e9a15521138d80144d82e2ddb} 
+Logger Utils\+::\+INTERNAL\+::\+GLOBAL\+\_\+\+LOGGER(\mbox{\hyperlink{_utils_8hpp_a5fec8cc196858c13d22f196809a7bd19}{GLOBAL\+\_\+\+LOGGER\+\_\+\+FILE\+\_\+\+PATH}}, Logger\+::\+USE\+\_\+\+DEBUG)}
+
+Global logger to be used by the rest of the program Declared in {\ttfamily Logger.\+cc} 

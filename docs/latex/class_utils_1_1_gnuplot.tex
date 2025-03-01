@@ -1,0 +1,64 @@
+\doxysection{Utils\+::Gnuplot Class Reference}
+\hypertarget{class_utils_1_1_gnuplot}{}\label{class_utils_1_1_gnuplot}\index{Utils::Gnuplot@{Utils::Gnuplot}}
+
+
+{\ttfamily \#include $<$Utils.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_utils_1_1_gnuplot_a056a302fcf333f84ea7df1c4e6104adb}{Gnuplot}} ()
+\item 
+\mbox{\hyperlink{class_utils_1_1_gnuplot_aacd681864a17f765759941f982301339}{\texorpdfstring{$\sim$}{\string~}\+Gnuplot}} ()
+\item 
+void \mbox{\hyperlink{class_utils_1_1_gnuplot_a9d17547bc24411f9cd275cd7c3be706c}{set\+Title}} (std\+::string title)
+\item 
+void \mbox{\hyperlink{class_utils_1_1_gnuplot_a07a0c7f1e24b78c9d8d2cd478a6bf1a3}{plot\+Func}} (std\+::string func, float min, float max)
+\item 
+void \mbox{\hyperlink{class_utils_1_1_gnuplot_ab620e33929e0e3df4dea799f31291339}{plot}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Provides an interface for plotting things using \doxylink{class_utils_1_1_gnuplot}{Gnuplot} 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_utils_1_1_gnuplot_a056a302fcf333f84ea7df1c4e6104adb}\index{Utils::Gnuplot@{Utils::Gnuplot}!Gnuplot@{Gnuplot}}
+\index{Gnuplot@{Gnuplot}!Utils::Gnuplot@{Utils::Gnuplot}}
+\doxysubsubsection{\texorpdfstring{Gnuplot()}{Gnuplot()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_gnuplot_a056a302fcf333f84ea7df1c4e6104adb} 
+Utils\+::\+Gnuplot\+::\+Gnuplot (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Default constructor. Only thing it does it add a few commands to allow saving plots as PDF\textquotesingle{}s. \Hypertarget{class_utils_1_1_gnuplot_aacd681864a17f765759941f982301339}\index{Utils::Gnuplot@{Utils::Gnuplot}!````~Gnuplot@{\texorpdfstring{$\sim$}{\string~}Gnuplot}}
+\index{````~Gnuplot@{\texorpdfstring{$\sim$}{\string~}Gnuplot}!Utils::Gnuplot@{Utils::Gnuplot}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Gnuplot()}{\string~Gnuplot()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_gnuplot_aacd681864a17f765759941f982301339} 
+Utils\+::\+Gnuplot\+::\texorpdfstring{$\sim$}{\string~}\+Gnuplot (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Default destructor. Does nothing, really. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_utils_1_1_gnuplot_ab620e33929e0e3df4dea799f31291339}\index{Utils::Gnuplot@{Utils::Gnuplot}!plot@{plot}}
+\index{plot@{plot}!Utils::Gnuplot@{Utils::Gnuplot}}
+\doxysubsubsection{\texorpdfstring{plot()}{plot()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_gnuplot_ab620e33929e0e3df4dea799f31291339} 
+void Utils\+::\+Gnuplot\+::plot (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Saves all commands to a file and passes it to \doxylink{class_utils_1_1_gnuplot}{Gnuplot} \Hypertarget{class_utils_1_1_gnuplot_a07a0c7f1e24b78c9d8d2cd478a6bf1a3}\index{Utils::Gnuplot@{Utils::Gnuplot}!plotFunc@{plotFunc}}
+\index{plotFunc@{plotFunc}!Utils::Gnuplot@{Utils::Gnuplot}}
+\doxysubsubsection{\texorpdfstring{plotFunc()}{plotFunc()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_gnuplot_a07a0c7f1e24b78c9d8d2cd478a6bf1a3} 
+void Utils\+::\+Gnuplot\+::plot\+Func (\begin{DoxyParamCaption}\item[{std\+::string}]{func}{, }\item[{float}]{min}{, }\item[{float}]{max}{}\end{DoxyParamCaption})}
+
+Takes in a function as a string to plot. Plots in the range \mbox{[}min, max\mbox{]}. \Hypertarget{class_utils_1_1_gnuplot_a9d17547bc24411f9cd275cd7c3be706c}\index{Utils::Gnuplot@{Utils::Gnuplot}!setTitle@{setTitle}}
+\index{setTitle@{setTitle}!Utils::Gnuplot@{Utils::Gnuplot}}
+\doxysubsubsection{\texorpdfstring{setTitle()}{setTitle()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_gnuplot_a9d17547bc24411f9cd275cd7c3be706c} 
+void Utils\+::\+Gnuplot\+::set\+Title (\begin{DoxyParamCaption}\item[{std\+::string}]{title}{}\end{DoxyParamCaption})}
+
+Sets the title of the plot. can also be done via the constructor. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+W\+:/include/\mbox{\hyperlink{_utils_8hpp}{Utils.\+hpp}}\item 
+W\+:/src/Gnuplot.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,12 @@
+# Center-of-Mass energy: measured in TeV
+ECM=14.0
+
+# pdf information
+PDFName=cteq6l1
+PDFMemberNo=0
+
+Process=PP2Zg2ll
+
+
+# number of evaluations of the differential cross section in the Monte Carlo integration
+NumXSIterations=1000000

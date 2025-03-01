@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcolsim.a CMakeFiles/colsim.dir/src/ColSim.cpp.o CMakeFiles/colsim.dir/src/Gnuplot.cpp.o CMakeFiles/colsim.dir/src/HardProcess.cpp.o CMakeFiles/colsim.dir/src/LHEFFile.cpp.o CMakeFiles/colsim.dir/src/Logger.cpp.o CMakeFiles/colsim.dir/src/MonteCarlo.cpp.o CMakeFiles/colsim.dir/src/Particle.cpp.o CMakeFiles/colsim.dir/src/PhaseSpace.cpp.o CMakeFiles/colsim.dir/src/Process.cpp.o CMakeFiles/colsim.dir/src/Settings.cpp.o CMakeFiles/colsim.dir/src/Utils.cpp.o
+/usr/bin/ranlib libcolsim.a

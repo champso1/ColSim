@@ -1,0 +1,60 @@
+\doxysection{Utils\+::Config\+File Class Reference}
+\hypertarget{class_utils_1_1_config_file}{}\label{class_utils_1_1_config_file}\index{Utils::ConfigFile@{Utils::ConfigFile}}
+
+
+{\ttfamily \#include $<$Utils.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_utils_1_1_config_file_a04f63b1e470868f79d81c79096f13cb1}\label{class_utils_1_1_config_file_a04f63b1e470868f79d81c79096f13cb1} 
+{\bfseries Config\+File} (std\+::string file\+\_\+path)
+\item 
+\Hypertarget{class_utils_1_1_config_file_a861976060c3386b8c960ff95d318839d}\label{class_utils_1_1_config_file_a861976060c3386b8c960ff95d318839d} 
+void {\bfseries set\+Val} (std\+::string val\+\_\+name, float val)
+\item 
+\Hypertarget{class_utils_1_1_config_file_a4525904d38d306b8337693b9eb321893}\label{class_utils_1_1_config_file_a4525904d38d306b8337693b9eb321893} 
+float {\bfseries get\+Val} (std\+::string val\+\_\+name)
+\item 
+\Hypertarget{class_utils_1_1_config_file_a04f63b1e470868f79d81c79096f13cb1}\label{class_utils_1_1_config_file_a04f63b1e470868f79d81c79096f13cb1} 
+{\bfseries Config\+File} (std\+::string file\+\_\+path)
+\item 
+void \mbox{\hyperlink{class_utils_1_1_config_file_a861976060c3386b8c960ff95d318839d}{set\+Val}} (std\+::string val\+\_\+name, float val)
+\item 
+float \mbox{\hyperlink{class_utils_1_1_config_file_a4525904d38d306b8337693b9eb321893}{get\+Val}} (std\+::string val\+\_\+name)
+\item 
+void \mbox{\hyperlink{class_utils_1_1_config_file_aa28055818fa69329d56d79ec528bcf11}{print\+Config}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Stores information given in the configuration file. This information is then distributed wherever it needs to during program execution. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_utils_1_1_config_file_a4525904d38d306b8337693b9eb321893}\index{Utils::ConfigFile@{Utils::ConfigFile}!getVal@{getVal}}
+\index{getVal@{getVal}!Utils::ConfigFile@{Utils::ConfigFile}}
+\doxysubsubsection{\texorpdfstring{getVal()}{getVal()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_config_file_a4525904d38d306b8337693b9eb321893} 
+float Utils\+::\+Config\+File\+::get\+Val (\begin{DoxyParamCaption}\item[{std\+::string}]{val\+\_\+name}{}\end{DoxyParamCaption})}
+
+Grabs the corresponding entry from the config file data. Returns 0.\+0f if the value doesn\textquotesingle{}t exist.
+
+@\+TODO\+: Do error handling for this a little better; It\textquotesingle{}s possible a data entry could be zero. \Hypertarget{class_utils_1_1_config_file_aa28055818fa69329d56d79ec528bcf11}\index{Utils::ConfigFile@{Utils::ConfigFile}!printConfig@{printConfig}}
+\index{printConfig@{printConfig}!Utils::ConfigFile@{Utils::ConfigFile}}
+\doxysubsubsection{\texorpdfstring{printConfig()}{printConfig()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_config_file_aa28055818fa69329d56d79ec528bcf11} 
+void Utils\+::\+Config\+File\+::print\+Config (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Prints all of the values loaded from the config. \Hypertarget{class_utils_1_1_config_file_a861976060c3386b8c960ff95d318839d}\index{Utils::ConfigFile@{Utils::ConfigFile}!setVal@{setVal}}
+\index{setVal@{setVal}!Utils::ConfigFile@{Utils::ConfigFile}}
+\doxysubsubsection{\texorpdfstring{setVal()}{setVal()}}
+{\footnotesize\ttfamily \label{class_utils_1_1_config_file_a861976060c3386b8c960ff95d318839d} 
+void Utils\+::\+Config\+File\+::set\+Val (\begin{DoxyParamCaption}\item[{std\+::string}]{val\+\_\+name}{, }\item[{float}]{val}{}\end{DoxyParamCaption})}
+
+Sets a value after loading the config file. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+W\+:/include/Config\+File.\+hpp\item 
+W\+:/include/\mbox{\hyperlink{_utils_8hpp}{Utils.\+hpp}}\item 
+W\+:/src/Config\+File.\+cc\end{DoxyCompactItemize}

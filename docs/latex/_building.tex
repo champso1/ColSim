@@ -1,0 +1,85 @@
+\chapter{Building}
+\hypertarget{_building}{}\label{_building}\index{Building@{Building}}
+\hypertarget{_building_autotoc_md0}{}\doxysection{\texorpdfstring{Dependencies}{Dependencies}}\label{_building_autotoc_md0}
+Here I list the dependencies for this project, in case you need to query online for additional instructions for a system that this manual doesn\textquotesingle{}t cover. Though, if you are on a system other than Windows, for which I give (I hope) sufficient documentation, you could probably figure it out yourself.
+
+
+\begin{DoxyItemize}
+\item {\itshape C/\+C++ compiler and CMake}\+: to build the project.
+\item {\itshape Doxygen}\+: for generating HTML/\+PDF documentation for the project.
+\item {\itshape Graphviz}\+: a "{}dependency"{} of Doxygen for making visual diagrams of the components in the project.
+\item {\itshape Gnuplot}\+: A GNU plotting tool that is relatively lightweight and simple to use.
+\end{DoxyItemize}\hypertarget{_building_autotoc_md1}{}\doxysection{\texorpdfstring{Unix-\/like (Linux, Mac)}{Unix-\/like (Linux, Mac)}}\label{_building_autotoc_md1}
+Install the above dependencies via your system\textquotesingle{}s package manager. For instance, if using a Debian-\/based distro, you\textquotesingle{}d type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ apt\ install\ build-\/essential\ cmake\ doxygen\ graphviz\ gnuplot}
+
+\end{DoxyCode}
+
+
+Then, clone the repository somewhere, cd into it and do the usual CMake stuff\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir\ build\ \&\&\ cd\ build}
+\DoxyCodeLine{cmake\ ..}
+\DoxyCodeLine{cmake\ -\/-\/build\ .}
+
+\end{DoxyCode}
+
+
+After it compiles, you will have an executable called {\bfseries{NAME}}.\hypertarget{_building_autotoc_md2}{}\doxysection{\texorpdfstring{Windows}{Windows}}\label{_building_autotoc_md2}
+Preferably, do this within WSL, then you can follow the Unix-\/like instructions (and simply copy-\/paste the package installation command).\hypertarget{_building_autotoc_md3}{}\doxysubsection{\texorpdfstring{MSYS2}{MSYS2}}\label{_building_autotoc_md3}
+I have found, though, that MSYS2 works pretty well. Installation instructions can be found online. I prefer (and it is recommended to use) the UCRT64 environment. Install the same packages as in the Unix-\/like instructions, but include the ridiculously long prefix to install the UCRT-\/specific ones, i.\+e. you\textquotesingle{}d type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pacman\ -\/S\ mingw-\/w64-\/ucrt-\/x86\_64-\/toolchain\ mingw-\/w64-\/ucrt-\/x86\_64-\/cmake\ mingw-\/w64-\/ucrt-\/x86\_64-\/doxygen\ mingw-\/w64-\/ucrt-\/x86\_64-\/graphviz\ mingw-\/w64-\/ucrt-\/x86\_64-\/gnuplot}
+
+\end{DoxyCode}
+
+
+Once this is done and the UCRT64 binary folder is in your {\ttfamily PATH} environment variable, then you can follow the same build steps as in the Unix-\/like instructions from within a Powershell or Command Prompt.\hypertarget{_building_autotoc_md5}{}\doxysection{\texorpdfstring{Dependencies}{Dependencies}}\label{_building_autotoc_md5}
+Here I list the dependencies for this project, in case you need to query online for additional instructions for a system that this manual doesn\textquotesingle{}t cover. Though, if you are on a system other than Windows, for which I give (I hope) sufficient documentation, you could probably figure it out yourself.
+
+
+\begin{DoxyItemize}
+\item {\itshape C/\+C++ compiler and CMake}\+: to build the project.
+\item {\itshape Doxygen}\+: for generating HTML/\+PDF documentation for the project.
+\item {\itshape Graphviz}\+: a "{}dependency"{} of Doxygen for making visual diagrams of the components in the project.
+\item {\itshape Gnuplot}\+: A GNU plotting tool that is relatively lightweight and simple to use.
+\end{DoxyItemize}\hypertarget{_building_autotoc_md6}{}\doxysection{\texorpdfstring{Unix-\/like (Linux, Mac)}{Unix-\/like (Linux, Mac)}}\label{_building_autotoc_md6}
+Install the above dependencies via your system\textquotesingle{}s package manager. For instance, if using a Debian-\/based distro, you\textquotesingle{}d type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{sudo\ apt\ install\ build-\/essential\ cmake\ doxygen\ graphviz\ gnuplot}
+
+\end{DoxyCode}
+
+
+Then, clone the repository somewhere, cd into it and do the usual CMake stuff\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{mkdir\ build\ \&\&\ cd\ build}
+\DoxyCodeLine{cmake\ ..}
+\DoxyCodeLine{cmake\ -\/-\/build\ .}
+
+\end{DoxyCode}
+
+
+After it compiles, you will have an executable called {\bfseries{NAME}}.\hypertarget{_building_autotoc_md7}{}\doxysection{\texorpdfstring{Windows}{Windows}}\label{_building_autotoc_md7}
+Preferably, do this within WSL, then you can follow the Unix-\/like instructions (and simply copy-\/paste the package installation command).\hypertarget{_building_autotoc_md8}{}\doxysubsection{\texorpdfstring{MSYS2}{MSYS2}}\label{_building_autotoc_md8}
+I have found, though, that MSYS2 works pretty well. Installation instructions can be found online. I prefer (and it is recommended to use) the UCRT64 environment. Install the same packages as in the Unix-\/like instructions, but include the ridiculously long prefix to install the UCRT-\/specific ones, i.\+e. you\textquotesingle{}d type\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{pacman\ -\/S\ mingw-\/w64-\/ucrt-\/x86\_64-\/toolchain\ mingw-\/w64-\/ucrt-\/x86\_64-\/cmake\ mingw-\/w64-\/ucrt-\/x86\_64-\/doxygen\ mingw-\/w64-\/ucrt-\/x86\_64-\/graphviz\ mingw-\/w64-\/ucrt-\/x86\_64-\/gnuplot}
+
+\end{DoxyCode}
+
+
+Once this is done and the UCRT64 binary folder is in your {\ttfamily PATH} environment variable, then you can follow the same build steps as in the Unix-\/like instructions from within a Powershell or Command Prompt. 
