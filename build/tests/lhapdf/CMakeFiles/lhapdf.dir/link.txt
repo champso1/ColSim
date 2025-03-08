@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/lhapdf.dir/lhapdf.cpp.o -o lhapdf  -Wl,-rpath,/home/champson/Software/LHAPDF-6.5.4/install/lib /home/champson/Software/LHAPDF-6.5.4/install/lib/libLHAPDF.so

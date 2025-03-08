@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/basic.dir/basic.cpp.o -o basic  -Wl,-rpath,/home/champson/Software/LHAPDF-6.5.4/install/lib ../../libcolsim.a /home/champson/Software/LHAPDF-6.5.4/install/lib/libLHAPDF.so
