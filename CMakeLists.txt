@@ -7,28 +7,21 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 
 # main executable
-file(GLOB_RECURSE sources src/*.cpp inc/*.hpp)
-add_library(colsim STATIC ${sources})
-target_include_directories(colsim PUBLIC inc)
+file(GLOB_RECURSE sources src/*.cpp include/*.hpp)
+add_library(ColSim STATIC ${sources})
+
+# include headers
+target_include_directories(ColSim PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
 
 
-# link with LHAPDF and GSL
+# link with LHAPDF
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/share/cmake")
-
 find_package(LHAPDF REQUIRED)
-target_include_directories(colsim PUBLIC ${LHAPDF_INCLUDE_DIRS})
-target_link_libraries(colsim PUBLIC ${LHAPDF_LIBRARIES})
-
-#find_package(GSL REQUIRED)
-#target_include_directories(colsim PUBLIC ${GSL_INCLUDE_DIRS})
-#target_link_libraries(colsim PUBLIC ${GSL_LIBRARIES})
-
-
-# copy the `res` directory to build folder
-# so we can handle relative paths like "res/xx.xx" in the code
-# once the executable is produced
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
-
+target_include_directories(ColSim PUBLIC ${LHAPDF_INCLUDE_DIRS})
+target_link_libraries(ColSim PUBLIC ${LHAPDF_LIBRARIES})
 
 # --------------------------
 #   Doxygen/Documentation
@@ -50,7 +43,49 @@ if(BUILD_DOCS)
   endif(DOXYGEN_FOUND)
 endif(BUILD_DOCS)
 
+# --- installing --- #
+
+# gives us CMAKE_INSTALL_<x>DIR
+# that is set by CMAKE_INSTALL_PREFIX
+include(GNUInstallDirs)
+
+# installs the artifacts, and registers the target
+# with an "export set"
+# which essentially includes essential project info
+install(TARGETS ColSim
+  EXPORT ColSimTargets
+  ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+# installs the export set as well
+install(EXPORT ColSimTargets
+  FILE ColSimTargets.cmake
+  NAMESPACE ColSim::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
+)
+
+# these commands set up and install Cmake config files
+# so that other projects can find this library
+# it uses the Cmake.config.in file
+# which these commands fill with necessary info
+# it also will include the exported targets
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+  ${CMAKE_SOURCE_DIR}/share/cmake/Config.cmake.in
+  ${CMAKE_BINARY_DIR}/ColSimConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
+)
+
+# installs the above files
+install(FILES
+  ${CMAKE_BINARY_DIR}/ColSimConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
+)
 
 
-# testing
-add_subdirectory(tests)
+# the first install command only set some metadata up
+# it only installs binaries and such
+# so we have to manually install headers
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)

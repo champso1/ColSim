@@ -17,9 +17,9 @@
 
 namespace ColSim {
 
-	ColSimMain::ColSimMain(const std::string& configFilePath) {
+	ColSimMain::ColSimMain(const std::string& configFilePath, const std::string& logFilePath) {
 	    // initalize the logger with the default file path
-	    LOGGER.initFile();
+	    LOGGER.initFile(logFilePath);
 
 		// read in the settings from the configuration file
 		SETTINGS.loadConfigFile(configFilePath);
@@ -110,6 +110,9 @@ namespace ColSim {
 		crossSectionError = res.error;
 		maxWeight = res.maxWeight;
 		maxPSPoints = std::move(res.maxPoints); // not that it matters
+
+		// log some of this stuff
+		LOGGER.logMessage("Maximum weight achieved: %.9lf", maxWeight);
 	};
 	
 
@@ -118,10 +121,32 @@ namespace ColSim {
 		
 		// std::vector<PartonShower::Emission> emissions = partonShower->Evolve(1000.0, 1.0, 0.01627095);
 
-		std::vector<Double> phaseSpacePoints;
+		std::vector<Double> phaseSpacePoints, deltas;
 		hardProcess->getPhaseSpace().fillPhaseSpace(phaseSpacePoints);
+		deltas = hardProcess->getPhaseSpace().getDeltas();
 		
 		Double weight = hardProcess->dSigma(phaseSpacePoints);
+		for (Double d : deltas)
+			weight *= d;
+
+		// hit-or-miss to see if it actually works
+		Double weightRatio = weight/maxWeight;
+		Double randNum = randDouble();
+
+		UInt32 numRejectedEvents = 0;
+		
+		while (randNum > weightRatio) {
+			numRejectedEvents++;
+			hardProcess->getPhaseSpace().fillPhaseSpace(phaseSpacePoints);
+			weight = hardProcess->dSigma(phaseSpacePoints);
+			for (Double d : deltas)
+				weight *= d;
+
+			weightRatio = weight/maxWeight;
+			randNum = randDouble();
+		}
+		LOGGER.logMessage("Rejected %u events for this iteration.",
+						  numRejectedEvents);
 		
 		std::vector<Particle> particles;
 		hardProcess->generateParticles(particles);

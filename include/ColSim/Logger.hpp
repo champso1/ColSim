@@ -29,26 +29,44 @@ namespace ColSim {
 		Logger() : useFile(false) {}
 		~Logger();
 
+		/** Singleton getter.
+		 */
 		static Logger& getInstance() {
 			static Logger logger;
 			return logger;
 		}
 
-		// set a file to be used
-		void initFile(const std::string& filePath = DEFAULT_PATH);
+		/** Since the logger is a singleton, this is
+		 *  essentially the constructor.
+		 */
+		void initFile(const std::string& fp);
 
-		// message logging, optionally to the provided file
+		/** Logs an error to stderr and the provided output file
+		 *  Colors it in red (if your terminal supports colors)
+		 *  Indicates something has gone seriously wrong,
+		 *  but the program is able to continue.
+		 */
 		void logError(const char* fmt ...);
+
+		/** Logs a warning to stderr and the provided output file
+		 *  Colors it in yellow (if your terminal supports colors)
+		 *  Indicates a minor problem has occurred but largely
+		 *  doesn't affect the program itself; execution continues.
+		 */
 		void logWarning(const char* fmt ...);
+
+		/** Logs a message to stderr and the provided output file
+		 *  No color used.
+		 *  Used to output information or debug messages.
+		 *  Does not affect program execuation.
+		 */
 		void logMessage(const char* fmt ...);
 
-		// also stops program execution
+		/** Works the same as @a logError, but this will
+		 *  also halt program execution.
+		 */
 		void logAbort(const char* fmt, ...);
 	private:
-		// default path for logging to a file
-		// check Logger.cpp for actual value
-		static const std::string DEFAULT_PATH;
-
 		// info related to file
 		Bool useFile;
 		std::string filePath;

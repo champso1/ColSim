@@ -7,11 +7,8 @@
 
 namespace ColSim {
 
-	const std::string Logger::DEFAULT_PATH = "./res/output.log";
-
-	
-	void Logger::initFile(const std::string& _filePath) {
-		filePath = _filePath;
+	void Logger::initFile(const std::string& fp) {
+		filePath = fp;
 		// open the file stream
 		outFileStream.open(filePath);
 		if (!outFileStream)

@@ -12,8 +12,10 @@ int main() {
 	colsim.start();
 
 	// generate 10 events
-	for (int i=0; i<100; i++)
-		cout << colsim.generateEvent() << "\n";
+	for (int i=0; i<10; i++)
+	    colsim.generateEvent();
+
+	cout << "Final event generated:\n" << colsim.getLastEvent();
 
 	// stop/deinitialize generation
 	colsim.stop();

@@ -22,11 +22,9 @@ namespace ColSim {
 		HardProcessResult res(numDims);
 		
 	    // setup vector for phase space points
-		std::vector<Double> points(numDims);
+		std::vector<Double> points;
 
-		// here we calculate the delta values
-		// since we multiply by the result of the function
-		// by definition of monte carlo integration
+		// here we get delta values which we need for Monte Carlo
 	    const std::vector<Double>& deltas = phaseSpace->getDeltas();
 		
 		for (int i=0; i<SETTINGS.numXSIterations; i++) {
@@ -34,7 +32,7 @@ namespace ColSim {
 			
 			// calculate that sheisse
 			Double weight = dSigma(points);
-	
+    
 			// multiply by the deltas of the independent variables
 			for (int j=0; j<numDims; j++)
 			    weight *= deltas[j];
@@ -50,7 +48,8 @@ namespace ColSim {
 					res.maxPoints[j] = points[j];
 			}
 		}
-		
+
+		// doing divisions, so we want a Double
 		Double numEvals_d = static_cast<Double>(SETTINGS.numXSIterations);
 		
 		res.result = weightSum/numEvals_d;

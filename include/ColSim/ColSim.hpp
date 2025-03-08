@@ -24,7 +24,8 @@ namespace ColSim {
 		
 		
 	public:
-		ColSimMain(const std::string& configFilePath="./res/config.in");
+		ColSimMain(const std::string& configFilePath="config.in",
+				   const std::string& logFilePath="out.log");
 
 		/** Calculates the cross section and does a few more initialization
 		 *  steps in preparation for event generation.
