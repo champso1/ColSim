@@ -1,6 +1,6 @@
 # ColSim
 
-ColSim (Collision Simulation) is a library/simulation tool that allows computation of the cross section of physical processes and generation of events. Thprogram is specifically aimed at processes at the hadron colliders (like the LHC in CERN).
+ColSim (Collision Simulation) is a library/simulation tool that allows computation of the cross section of physical processes and generation of events. The program is specifically aimed at processes at the hadron colliders (like the LHC in CERN).
 
 
 ## Building
@@ -38,13 +38,13 @@ The default for this project is to install the files in the `install` folder at 
 
 The configuration file contains some important information. Namely:
 
-- ECM: the center of mass energy in TeV
-- PDFName/PDFMemberNo: the name and set/member number of the PDF set to use.
-- Process: The process string. Currently, the default `PP2Zg2ll` (pp initial state, Z-boson/photon intermediate state, dilepton final state) is the only supported one, but in general, the "2"'s separate the initial, intermediate, and final states, and any combination of such states should result in a valid process.
-- NumXSIterations: The number of Monte Carlo iterations to do in the cross section calculation. I find that 1000000 (the current default) is a good sweet spot for accuracy and runtime.
-- AllowPhotonEmission/AllowGluonEmission: two yes/no settings for whether to allow the final state particles from the hard scattering process to emit photons or gluons, respectively. Just like with the process string, the current set values are the only allowed options since the only programmed case is gluon emission without photon emission.
+- **ECM**: the center of mass energy in TeV
+- **PDFName/PDFMemberNo**: the name and set/member number of the PDF set to use.
+- **Process**: The process string. Currently, the default `PP2Zg2ll` (pp initial state, Z-boson/photon intermediate state, dilepton final state) is the only supported one, but in general, the "2"'s separate the initial, intermediate, and final states, and any combination of such states should result in a valid process.
+- **NumXSIterations**: The number of Monte Carlo iterations to do in the cross section calculation. I find that 1000000 (the current default) is a good sweet spot for accuracy and runtime.
+- **AllowPhotonEmission/AllowGluonEmission**: two yes/no settings for whether to allow the final state particles from the hard scattering process to emit photons or gluons, respectively. Just like with the process string, the current set values are the only allowed options since the only programmed case is gluon emission without photon emission.
 
-> **_NOTE:_**: Ensure that the PDF set is installed on your system. To install the current default (CT18NNLO), use `lhapdf install CT18NNLO` (assuming that you set up LHAPDF correctly).
+> **_NOTE:_**: Ensure that the PDF set is installed on your system. To install the current default (CT18NNLO), use `lhapdf install CT18NNLO` (assuming that you set up LHAPDF correctly). This is a good default, so you can just stick with this one. Others can be found [on their website](https://www.lhapdf.org/pdfsets.html) if you are curious, though.
 
 
 
