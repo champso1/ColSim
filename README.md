@@ -12,7 +12,7 @@ This library is currently only able to be built on Unix-like systems, i.e. Windo
 
   - CMake >= 3.20
   - gcc (any remotely recent version that supports C++11 should work fine)
-  - (https://www.lhapdf.org/)[LHAPDF]: this library is used to query for PDF information which is required for the calculation of the partonic cross section. The website contains sufficient information to get it downloaded, built, and installed on your system. Ensure that your environment variables are set in such a way that the CMake files can be found by this project.
+  - [LHAPDF](https://www.lhapdf.org/): this library is used to query for PDF information which is required for the calculation of the partonic cross section. The website contains sufficient information to get it downloaded, built, and installed on your system. Ensure that your environment variables are set in such a way that the CMake files can be found by this project.
   - (Optional) Doxygen (and its dependencies): used for generating the documentation.
   
   
@@ -29,7 +29,7 @@ cmake --build .
 cmake --install .
 ```
 
-The default for this project is to install the files in the `install` folder at the top level of the project, not the system paths. You can change it to something else by inserting your install prefix of choice in the third line above.
+The default for this project is to install the files in the `install` folder at the top level of the project, not the system paths. You can change it to something else by inserting your install prefix of choice in the third line above, or otherwise leave it blank to install to the default place.
 
 
 ## Usage
