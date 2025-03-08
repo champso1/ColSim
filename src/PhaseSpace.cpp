@@ -1,15 +1,25 @@
 #include "ColSim/PhaseSpace.hpp"
 
 #include "ColSim//Settings.hpp"
+#include "ColSim/Math.hpp"
 
 #include <random>
 
 namespace ColSim {
-	PhaseSpace::~PhaseSpace() {
-		delete[] min;
-		delete[] max;
-		delete[] delta;
+	void PhaseSpace::fillDelta() {
+		for (int i=0; i<getDim(); i++)
+			delta[i] = max[i] - min[i];
 	}
+
+	void PhaseSpace::fillPhaseSpace(std::vector<Double>& vec) {
+		// ensure that there is capacity to do this
+		vec.resize(3);
+	    for (UInt32 i=0; i<getDim(); i++) {
+			Double val = randDouble()*getDeltas()[i] + getMins()[i];
+			vec[i] = val;
+		}
+	}
+	
 	
 	PhaseSpace_TauYCosth::PhaseSpace_TauYCosth() : PhaseSpace(3) {
 		// initialize rho ranges
@@ -22,13 +32,6 @@ namespace ColSim {
 		min[0] = -1.0; max[0] = 1.0;      // cosTheta
 		min[1] = rhoMin; max[1] = rhoMax; // rho
 		min[2] = 0.0; max[2] = 1.0;       // y
-	}
-
-
-
-
-
-	PhaseSpace_Costh::PhaseSpace_Costh() : PhaseSpace(3) {
-		*min = -1.0; *max = 1.0;
+		fillDelta();
 	}
 }; // namespace ColSim

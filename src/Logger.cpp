@@ -99,7 +99,7 @@ namespace ColSim {
 	    va_end(args);
 
 		char buf[512] = {0};
-		snprintf(buf, 512, "%s [ERROR] %s\n", prefixBuf, messageBuf);
+		snprintf(buf, 512, ANSI_COLOR_RED "%s [ERROR] %s\n" ANSI_COLOR_RESET, prefixBuf, messageBuf);
 
 		fprintf(stderr, "%s", buf);
 		if (useFile)

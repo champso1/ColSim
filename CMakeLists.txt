@@ -11,11 +11,17 @@ file(GLOB_RECURSE sources src/*.cpp inc/*.hpp)
 add_library(colsim STATIC ${sources})
 target_include_directories(colsim PUBLIC inc)
 
-# link with LHAPDF
+
+# link with LHAPDF and GSL
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/share/cmake")
+
 find_package(LHAPDF REQUIRED)
 target_include_directories(colsim PUBLIC ${LHAPDF_INCLUDE_DIRS})
 target_link_libraries(colsim PUBLIC ${LHAPDF_LIBRARIES})
+
+#find_package(GSL REQUIRED)
+#target_include_directories(colsim PUBLIC ${GSL_INCLUDE_DIRS})
+#target_link_libraries(colsim PUBLIC ${GSL_LIBRARIES})
 
 
 # copy the `res` directory to build folder

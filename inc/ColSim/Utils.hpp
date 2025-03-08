@@ -87,6 +87,10 @@ namespace ColSim {
     template <typename T>
 	extern UInt32 CountInVec(const std::vector<T>& vec, T item);
 
+	/** Erases @a in from @a str.
+	 */
+	extern std::string& Erase(std::string& str, const std::string& in);
+
 
 
 

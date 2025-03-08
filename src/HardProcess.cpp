@@ -12,6 +12,63 @@
 
 namespace ColSim {
 
+
+	HardProcessResult HardProcess::calculate() {
+		USize numDims = phaseSpace->getDim();
+		
+		Double weightSum = 0.0F;
+		Double weightSquaredSum = 0.0F;
+
+		HardProcessResult res(numDims);
+		
+	    // setup vector for phase space points
+		std::vector<Double> points(numDims);
+
+		// here we calculate the delta values
+		// since we multiply by the result of the function
+		// by definition of monte carlo integration
+	    const std::vector<Double>& deltas = phaseSpace->getDeltas();
+		
+		for (int i=0; i<SETTINGS.numXSIterations; i++) {
+			phaseSpace->fillPhaseSpace(points);
+			
+			// calculate that sheisse
+			Double weight = dSigma(points);
+	
+			// multiply by the deltas of the independent variables
+			for (int j=0; j<numDims; j++)
+			    weight *= deltas[j];
+
+			// add to total weight
+			weightSum += weight;
+			weightSquaredSum += pow(weight, 2);
+
+			// set maxes
+			if (weight > res.maxWeight) {
+				res.maxWeight = weight;
+				for (int j=0; j<numDims; j++)
+					res.maxPoints[j] = points[j];
+			}
+		}
+		
+		Double numEvals_d = static_cast<Double>(SETTINGS.numXSIterations);
+		
+		res.result = weightSum/numEvals_d;
+		Double variance = weightSquaredSum/numEvals_d
+			              - std::pow(weightSum/numEvals_d,2);
+		res.error = std::sqrt(variance/numEvals_d);
+
+		// scale to picobarns
+		res.result *= MAGIC_FACTOR;
+		res.error *= MAGIC_FACTOR;
+		
+		return res;
+	}
+
+
+
+	
+
 	PP2Zg2ll::PP2Zg2ll() {
 		phaseSpace = std::unique_ptr<PhaseSpace>(new PhaseSpace_TauYCosth());
 	}
@@ -79,7 +136,7 @@ namespace ColSim {
 	}
 
 
-	Double PP2Zg2ll::dSigma(Double phaseSpacePoints[3]) {
+	Double PP2Zg2ll::dSigma(const std::vector<Double>& phaseSpacePoints) {
 		LHAPDF::PDF* pdf = SETTINGS.pdf;
 		const Double ECM = SETTINGS.ECM;
 		const Double S = SETTINGS.S; // ECM^2
@@ -110,25 +167,46 @@ namespace ColSim {
 	}
 
 
+	void PP2Zg2ll::generateParticles(std::vector<Particle>& particles) {
+		Double S = SETTINGS.S;
+		Double ECM = SETTINGS.ECM;
 
+		std::vector<Double> phaseSpacePoints;
+		phaseSpace->fillPhaseSpace(phaseSpacePoints);
 
+		const Double cosTheta = phaseSpacePoints[0];
+		const Double rho      = phaseSpacePoints[1];
+		const double rand_y   = phaseSpacePoints[2];
 
+		// other variables
+	    const Double jacobian = (MASS_TR*WIDTH_TR) / (std::pow(std::cos(rho),2) * S);
 
+		const Double s_hat = MASS_TR*WIDTH_TR*std::tan(rho) + std::pow(MASS_TR,2);
+		const Double Q = std::sqrt(s_hat);
 
+		const Double yMax   = -0.5*std::log(s_hat/S);
+		const Double deltaY = 2.0*yMax;
+		const Double y      = (2.0*rand_y - 1.0)*yMax;
 
+		const Double x1 = std::sqrt(s_hat/S)*std::exp(y);
+		const Double x2 = std::sqrt(s_hat/S)*std::exp(-y);
 
-	ee2Zg2mumu::ee2Zg2mumu() {
-		phaseSpace = std::unique_ptr<PhaseSpace>(new PhaseSpace_Costh());
+		// boost parameter
+		Double beta = (x2-x1)/(x2+x1);
+		// more phase space points
+		Double phi = randDouble()*2.0*M_PI;
+		Double sinPhi = std::sin(phi);
+		Double cosPhi = std::cos(phi);
+		Double sinTheta = std::sqrt(1.0 - cosTheta*cosTheta);
+
+		particles.emplace_back(FourVector(0.5*x1*ECM, 0.0, 0.0, 0.5*x1*ECM),
+					1, "q1");
+		particles.emplace_back(FourVector(0.5*x2*ECM, 0.0, 0.0, -0.5*x2*ECM),
+					1, "q2");
+		particles.emplace_back(FourVector(0.5*Q, 0.5*Q*sinTheta*cosPhi, 0.5*Q*sinTheta*sinPhi, 0.5*Q*cosTheta).zBoost(beta),
+					13, "l1");
+		particles.emplace_back(FourVector(0.5*Q, -0.5*Q*sinTheta*cosPhi, -0.5*Q*sinTheta*sinPhi, -0.5*Q*cosTheta).zBoost(beta),
+					-13, "l2");
 	}
 
-	Double ee2Zg2mumu::dSigmaHat() {
-	}
-
-
-	Double ee2Zg2mumu::computeWeight() {
-	}
-
-	Double ee2Zg2mumu::dSigma(Double* _cosTheta) {
-		Double cosTheta = *_cosTheta;
-	}
 }; // namespace ColSim

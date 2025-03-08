@@ -4,6 +4,7 @@
 #include "ColSim/Types.hpp"
 #include "ColSim/FourVector.hpp"
 
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -26,10 +27,14 @@ namespace ColSim {
 				 const Int32 _pid, const std::string& _name)
 			: momentum(_momentum), pid(_pid), name(_name)
 		{}
+		
+		friend std::ostream& operator<<(std::ostream& o, const Particle& p) {
+			o << p.name << "(" << p.pid << ") ";
+			o << p.momentum;
+			o << "\n";
 
-		inline const Int32 getPid() const { return pid; }
-		inline const std::string& getName() const { return name; }
-
+			return o;
+		}
 		
 		const static std::vector<std::string> ALL_PARTICLE_NAMES;
 	};

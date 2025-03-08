@@ -14,8 +14,8 @@ typedef uint16_t UInt16;
 typedef uint32_t UInt32;
 typedef uint64_t UInt64;
 
-// size type is 32-bit unsigned integer
-typedef UInt32 USize;
+// size type is 64-bit unsigned integer
+typedef UInt64 USize;
 
 typedef UInt8 UByte;
 typedef Int8  SByte;

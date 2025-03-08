@@ -13,6 +13,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/champson/Dropbox/Coding/ColSim/share/cmake/FindLHAPDF.cmake"
   "/home/champson/Dropbox/Coding/ColSim/tests/CMakeLists.txt"
   "/home/champson/Dropbox/Coding/ColSim/tests/basic/CMakeLists.txt"
+  "/home/champson/Dropbox/Coding/ColSim/tests/lhapdf/CMakeLists.txt"
   "/usr/local/share/cmake-3.31/Modules/CMakeCXXInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeGenericSystem.cmake"
@@ -50,10 +51,12 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   "tests/CMakeFiles/CMakeDirectoryInformation.cmake"
   "tests/basic/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "tests/lhapdf/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/colsim.dir/DependInfo.cmake"
-  "tests/basic/CMakeFiles/main.dir/DependInfo.cmake"
+  "tests/basic/CMakeFiles/basic.dir/DependInfo.cmake"
+  "tests/lhapdf/CMakeFiles/lhapdf.dir/DependInfo.cmake"
   )

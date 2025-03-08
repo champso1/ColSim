@@ -75,9 +75,35 @@ namespace ColSim {
 		numXSIterations = std::stoi(items.at("NumXSIterations"));
 		LOGGER.logMessage("Using %d iterations for cross section calculation", numXSIterations);
 
+		
+		it = items.find("AllowPhotonEmission");
+		if (it == end)
+			throw std::runtime_error("Key 'AllowPhotonEmission' not present in configuration file.");
+		doPhotonEmission = items.at("AllowPhotonEmission").compare("yes") == 0;
+		if (doPhotonEmission)
+			LOGGER.logMessage("Doing photon emission\n");
+
+		it = items.find("AllowGluonEmission");
+		if (it == end)
+			throw std::runtime_error("Key 'AllowGluonEmission' not present in configuration file.");
+		doGluonEmission = items.at("AllowGluonEmission").compare("yes") == 0;
+		if (doGluonEmission)
+			LOGGER.logMessage("Doing gluon emission");
+
+		// can't have both
+		if (doPhotonEmission && doGluonEmission)
+			throw std::runtime_error("Cannot do both photon and gluon emission.");
+
+		// however at the moment we also cannot do photon emission
+		// TODO: implement photon emission and remove this
+		if (doPhotonEmission)
+			throw std::runtime_error("Cannot do photon emission at the moment. Please do gluon emission only.");
+		
+
 
 	    LOGGER.logMessage("Finished loading configuration file data.");
 
+		LHAPDF::setVerbosity(0);  // don't print anything, LHAPDF!
 		pdf = LHAPDF::mkPDF(PDFName, PDFMemberNo);
 	}
 

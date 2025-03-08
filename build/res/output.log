@@ -1,6 +1,10 @@
-02/27/25 17:50:09 [INFO] Using ECM=14000.000000
-02/27/25 17:50:09 [INFO] Using PDF=cteq6l1
-02/27/25 17:50:09 [INFO] 	 Member ID=0
-02/27/25 17:50:09 [INFO] Process string=PP2Zg2ll
-02/27/25 17:50:09 [INFO] Using 1000000 iterations for cross section calculation
-02/27/25 17:50:09 [INFO] Finished loading configuration file data.
+03/08/25 03:40:17 [INFO] Using ECM=14000.000000
+03/08/25 03:40:17 [INFO] Using PDF=CT18NNLO
+03/08/25 03:40:17 [INFO] 	 Member ID=0
+03/08/25 03:40:17 [INFO] Process string=PP2Zg2ll
+03/08/25 03:40:17 [INFO] Using 1000000 iterations for cross section calculation
+03/08/25 03:40:17 [INFO] Doing gluon emission
+03/08/25 03:40:17 [INFO] Finished loading configuration file data.
+03/08/25 03:40:17 [INFO] Calculating cross section via Monte Carlo integration...
+03/08/25 03:40:19 [INFO] Finished!
+03/08/25 03:40:19 [INFO] Result is: 1841.007221298 +- 6.639035229 pb (picobarns)

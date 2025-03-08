@@ -2,11 +2,22 @@
 ECM=14.0
 
 # pdf information
-PDFName=cteq6l1
+PDFName=CT18NNLO
 PDFMemberNo=0
 
-Process=PP2Zg2ll
 
+# ---------------------------
+# ----- Hard Scattering -----
+# ---------------------------
+Process=PP2Zg2ll
 
 # number of evaluations of the differential cross section in the Monte Carlo integration
 NumXSIterations=1000000
+
+
+
+# --------------------------
+# ---- Parton Showering ----
+# --------------------------
+AllowPhotonEmission=no
+AllowGluonEmission=yes

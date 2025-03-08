@@ -130,17 +130,30 @@ colsim/fast:
 .PHONY : colsim/fast
 
 #=============================================================================
-# Target rules for targets named main
+# Target rules for targets named basic
 
 # Build rule for target.
-main: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
-.PHONY : main
+basic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 basic
+.PHONY : basic
 
 # fast build rule for target.
-main/fast:
-	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/build
-.PHONY : main/fast
+basic/fast:
+	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/build
+.PHONY : basic/fast
+
+#=============================================================================
+# Target rules for targets named lhapdf
+
+# Build rule for target.
+lhapdf: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lhapdf
+.PHONY : lhapdf
+
+# fast build rule for target.
+lhapdf/fast:
+	$(MAKE) $(MAKESILENT) -f tests/lhapdf/CMakeFiles/lhapdf.dir/build.make tests/lhapdf/CMakeFiles/lhapdf.dir/build
+.PHONY : lhapdf/fast
 
 src/ColSim.o: src/ColSim.cpp.o
 .PHONY : src/ColSim.o
@@ -165,6 +178,30 @@ src/ColSim.s: src/ColSim.cpp.s
 src/ColSim.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/ColSim.cpp.s
 .PHONY : src/ColSim.cpp.s
+
+src/Constants.o: src/Constants.cpp.o
+.PHONY : src/Constants.o
+
+# target to build an object file
+src/Constants.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Constants.cpp.o
+.PHONY : src/Constants.cpp.o
+
+src/Constants.i: src/Constants.cpp.i
+.PHONY : src/Constants.i
+
+# target to preprocess a source file
+src/Constants.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Constants.cpp.i
+.PHONY : src/Constants.cpp.i
+
+src/Constants.s: src/Constants.cpp.s
+.PHONY : src/Constants.s
+
+# target to generate assembly for a file
+src/Constants.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Constants.cpp.s
+.PHONY : src/Constants.cpp.s
 
 src/Gnuplot.o: src/Gnuplot.cpp.o
 .PHONY : src/Gnuplot.o
@@ -262,29 +299,29 @@ src/Logger.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Logger.cpp.s
 .PHONY : src/Logger.cpp.s
 
-src/MonteCarlo.o: src/MonteCarlo.cpp.o
-.PHONY : src/MonteCarlo.o
+src/Math.o: src/Math.cpp.o
+.PHONY : src/Math.o
 
 # target to build an object file
-src/MonteCarlo.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/MonteCarlo.cpp.o
-.PHONY : src/MonteCarlo.cpp.o
+src/Math.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Math.cpp.o
+.PHONY : src/Math.cpp.o
 
-src/MonteCarlo.i: src/MonteCarlo.cpp.i
-.PHONY : src/MonteCarlo.i
+src/Math.i: src/Math.cpp.i
+.PHONY : src/Math.i
 
 # target to preprocess a source file
-src/MonteCarlo.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/MonteCarlo.cpp.i
-.PHONY : src/MonteCarlo.cpp.i
+src/Math.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Math.cpp.i
+.PHONY : src/Math.cpp.i
 
-src/MonteCarlo.s: src/MonteCarlo.cpp.s
-.PHONY : src/MonteCarlo.s
+src/Math.s: src/Math.cpp.s
+.PHONY : src/Math.s
 
 # target to generate assembly for a file
-src/MonteCarlo.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/MonteCarlo.cpp.s
-.PHONY : src/MonteCarlo.cpp.s
+src/Math.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Math.cpp.s
+.PHONY : src/Math.cpp.s
 
 src/Particle.o: src/Particle.cpp.o
 .PHONY : src/Particle.o
@@ -310,6 +347,30 @@ src/Particle.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Particle.cpp.s
 .PHONY : src/Particle.cpp.s
 
+src/PartonShower.o: src/PartonShower.cpp.o
+.PHONY : src/PartonShower.o
+
+# target to build an object file
+src/PartonShower.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/PartonShower.cpp.o
+.PHONY : src/PartonShower.cpp.o
+
+src/PartonShower.i: src/PartonShower.cpp.i
+.PHONY : src/PartonShower.i
+
+# target to preprocess a source file
+src/PartonShower.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/PartonShower.cpp.i
+.PHONY : src/PartonShower.cpp.i
+
+src/PartonShower.s: src/PartonShower.cpp.s
+.PHONY : src/PartonShower.s
+
+# target to generate assembly for a file
+src/PartonShower.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/PartonShower.cpp.s
+.PHONY : src/PartonShower.cpp.s
+
 src/PhaseSpace.o: src/PhaseSpace.cpp.o
 .PHONY : src/PhaseSpace.o
 
@@ -333,30 +394,6 @@ src/PhaseSpace.s: src/PhaseSpace.cpp.s
 src/PhaseSpace.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/PhaseSpace.cpp.s
 .PHONY : src/PhaseSpace.cpp.s
-
-src/Process.o: src/Process.cpp.o
-.PHONY : src/Process.o
-
-# target to build an object file
-src/Process.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Process.cpp.o
-.PHONY : src/Process.cpp.o
-
-src/Process.i: src/Process.cpp.i
-.PHONY : src/Process.i
-
-# target to preprocess a source file
-src/Process.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Process.cpp.i
-.PHONY : src/Process.cpp.i
-
-src/Process.s: src/Process.cpp.s
-.PHONY : src/Process.s
-
-# target to generate assembly for a file
-src/Process.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/src/Process.cpp.s
-.PHONY : src/Process.cpp.s
 
 src/Settings.o: src/Settings.cpp.o
 .PHONY : src/Settings.o
@@ -414,11 +451,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... basic"
 	@echo "... colsim"
-	@echo "... main"
+	@echo "... lhapdf"
 	@echo "... src/ColSim.o"
 	@echo "... src/ColSim.i"
 	@echo "... src/ColSim.s"
+	@echo "... src/Constants.o"
+	@echo "... src/Constants.i"
+	@echo "... src/Constants.s"
 	@echo "... src/Gnuplot.o"
 	@echo "... src/Gnuplot.i"
 	@echo "... src/Gnuplot.s"
@@ -431,18 +472,18 @@ help:
 	@echo "... src/Logger.o"
 	@echo "... src/Logger.i"
 	@echo "... src/Logger.s"
-	@echo "... src/MonteCarlo.o"
-	@echo "... src/MonteCarlo.i"
-	@echo "... src/MonteCarlo.s"
+	@echo "... src/Math.o"
+	@echo "... src/Math.i"
+	@echo "... src/Math.s"
 	@echo "... src/Particle.o"
 	@echo "... src/Particle.i"
 	@echo "... src/Particle.s"
+	@echo "... src/PartonShower.o"
+	@echo "... src/PartonShower.i"
+	@echo "... src/PartonShower.s"
 	@echo "... src/PhaseSpace.o"
 	@echo "... src/PhaseSpace.i"
 	@echo "... src/PhaseSpace.s"
-	@echo "... src/Process.o"
-	@echo "... src/Process.i"
-	@echo "... src/Process.s"
 	@echo "... src/Settings.o"
 	@echo "... src/Settings.i"
 	@echo "... src/Settings.s"

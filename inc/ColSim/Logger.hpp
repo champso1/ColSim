@@ -44,7 +44,6 @@ namespace ColSim {
 
 		// also stops program execution
 		void logAbort(const char* fmt, ...);
-		
 	private:
 		// default path for logging to a file
 		// check Logger.cpp for actual value

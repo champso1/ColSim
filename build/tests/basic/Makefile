@@ -117,42 +117,42 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-tests/basic/CMakeFiles/main.dir/rule:
-	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/basic/CMakeFiles/main.dir/rule
-.PHONY : tests/basic/CMakeFiles/main.dir/rule
+tests/basic/CMakeFiles/basic.dir/rule:
+	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/basic/CMakeFiles/basic.dir/rule
+.PHONY : tests/basic/CMakeFiles/basic.dir/rule
 
 # Convenience name for target.
-main: tests/basic/CMakeFiles/main.dir/rule
-.PHONY : main
+basic: tests/basic/CMakeFiles/basic.dir/rule
+.PHONY : basic
 
 # fast build rule for target.
-main/fast:
-	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/build
-.PHONY : main/fast
+basic/fast:
+	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/build
+.PHONY : basic/fast
 
-main.o: main.cpp.o
-.PHONY : main.o
+basic.o: basic.cpp.o
+.PHONY : basic.o
 
 # target to build an object file
-main.cpp.o:
-	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/main.cpp.o
-.PHONY : main.cpp.o
+basic.cpp.o:
+	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/basic.cpp.o
+.PHONY : basic.cpp.o
 
-main.i: main.cpp.i
-.PHONY : main.i
+basic.i: basic.cpp.i
+.PHONY : basic.i
 
 # target to preprocess a source file
-main.cpp.i:
-	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/main.cpp.i
-.PHONY : main.cpp.i
+basic.cpp.i:
+	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/basic.cpp.i
+.PHONY : basic.cpp.i
 
-main.s: main.cpp.s
-.PHONY : main.s
+basic.s: basic.cpp.s
+.PHONY : basic.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/main.cpp.s
-.PHONY : main.cpp.s
+basic.cpp.s:
+	cd /home/champson/Dropbox/Coding/ColSim/build && $(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/basic.cpp.s
+.PHONY : basic.cpp.s
 
 # Help Target
 help:
@@ -162,10 +162,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... main"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... basic"
+	@echo "... basic.o"
+	@echo "... basic.i"
+	@echo "... basic.s"
 .PHONY : help
 
 

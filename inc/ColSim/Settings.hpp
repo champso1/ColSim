@@ -12,13 +12,26 @@ namespace ColSim {
 
 	class Settings {
 	public:
+
+		// general settings
 		Double ECM, S;
 		std::string PDFName;
 		UInt32 PDFMemberNo;
-		std::string Process;
 		LHAPDF::PDF* pdf;
 
+		// hard scattering settings
+		std::string Process;
 		UInt32 numXSIterations;
+
+		// parton showering settings
+		Bool doPhotonEmission;
+		Bool doGluonEmission;
+
+		// values stored after the cross section
+		// has been computed
+		Double crossSection;
+		Double crossSectionError; // standard deviation
+		
 	    
 		Settings() : PDFName(""), Process(""), pdf(nullptr) {}
 		~Settings() { delete pdf; }

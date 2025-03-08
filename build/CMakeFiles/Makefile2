@@ -86,29 +86,33 @@ clean: tests/clean
 
 # Recursive "all" directory target.
 tests/all: tests/basic/all
+tests/all: tests/lhapdf/all
 .PHONY : tests/all
 
 # Recursive "codegen" directory target.
 tests/codegen: tests/basic/codegen
+tests/codegen: tests/lhapdf/codegen
 .PHONY : tests/codegen
 
 # Recursive "preinstall" directory target.
 tests/preinstall: tests/basic/preinstall
+tests/preinstall: tests/lhapdf/preinstall
 .PHONY : tests/preinstall
 
 # Recursive "clean" directory target.
 tests/clean: tests/basic/clean
+tests/clean: tests/lhapdf/clean
 .PHONY : tests/clean
 
 #=============================================================================
 # Directory level rules for directory tests/basic
 
 # Recursive "all" directory target.
-tests/basic/all: tests/basic/CMakeFiles/main.dir/all
+tests/basic/all: tests/basic/CMakeFiles/basic.dir/all
 .PHONY : tests/basic/all
 
 # Recursive "codegen" directory target.
-tests/basic/codegen: tests/basic/CMakeFiles/main.dir/codegen
+tests/basic/codegen: tests/basic/CMakeFiles/basic.dir/codegen
 .PHONY : tests/basic/codegen
 
 # Recursive "preinstall" directory target.
@@ -116,8 +120,27 @@ tests/basic/preinstall:
 .PHONY : tests/basic/preinstall
 
 # Recursive "clean" directory target.
-tests/basic/clean: tests/basic/CMakeFiles/main.dir/clean
+tests/basic/clean: tests/basic/CMakeFiles/basic.dir/clean
 .PHONY : tests/basic/clean
+
+#=============================================================================
+# Directory level rules for directory tests/lhapdf
+
+# Recursive "all" directory target.
+tests/lhapdf/all: tests/lhapdf/CMakeFiles/lhapdf.dir/all
+.PHONY : tests/lhapdf/all
+
+# Recursive "codegen" directory target.
+tests/lhapdf/codegen: tests/lhapdf/CMakeFiles/lhapdf.dir/codegen
+.PHONY : tests/lhapdf/codegen
+
+# Recursive "preinstall" directory target.
+tests/lhapdf/preinstall:
+.PHONY : tests/lhapdf/preinstall
+
+# Recursive "clean" directory target.
+tests/lhapdf/clean: tests/lhapdf/CMakeFiles/lhapdf.dir/clean
+.PHONY : tests/lhapdf/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/colsim.dir
@@ -126,12 +149,12 @@ tests/basic/clean: tests/basic/CMakeFiles/main.dir/clean
 CMakeFiles/colsim.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Built target colsim"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15 "Built target colsim"
 .PHONY : CMakeFiles/colsim.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/colsim.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 12
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 13
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/colsim.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 0
 .PHONY : CMakeFiles/colsim.dir/rule
@@ -143,7 +166,7 @@ colsim: CMakeFiles/colsim.dir/rule
 # codegen rule for target.
 CMakeFiles/colsim.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/colsim.dir/build.make CMakeFiles/colsim.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10,11,12 "Finished codegen for target colsim"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15 "Finished codegen for target colsim"
 .PHONY : CMakeFiles/colsim.dir/codegen
 
 # clean rule for target.
@@ -152,36 +175,68 @@ CMakeFiles/colsim.dir/clean:
 .PHONY : CMakeFiles/colsim.dir/clean
 
 #=============================================================================
-# Target rules for target tests/basic/CMakeFiles/main.dir
+# Target rules for target tests/basic/CMakeFiles/basic.dir
 
 # All Build rule for target.
-tests/basic/CMakeFiles/main.dir/all: CMakeFiles/colsim.dir/all
-	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/depend
-	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=13,14 "Built target main"
-.PHONY : tests/basic/CMakeFiles/main.dir/all
+tests/basic/CMakeFiles/basic.dir/all: CMakeFiles/colsim.dir/all
+	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=1,2 "Built target basic"
+.PHONY : tests/basic/CMakeFiles/basic.dir/all
 
 # Build rule for subdir invocation for target.
-tests/basic/CMakeFiles/main.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 14
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/basic/CMakeFiles/main.dir/all
+tests/basic/CMakeFiles/basic.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 15
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/basic/CMakeFiles/basic.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 0
-.PHONY : tests/basic/CMakeFiles/main.dir/rule
+.PHONY : tests/basic/CMakeFiles/basic.dir/rule
 
 # Convenience name for target.
-main: tests/basic/CMakeFiles/main.dir/rule
-.PHONY : main
+basic: tests/basic/CMakeFiles/basic.dir/rule
+.PHONY : basic
 
 # codegen rule for target.
-tests/basic/CMakeFiles/main.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=13,14 "Finished codegen for target main"
-.PHONY : tests/basic/CMakeFiles/main.dir/codegen
+tests/basic/CMakeFiles/basic.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=1,2 "Finished codegen for target basic"
+.PHONY : tests/basic/CMakeFiles/basic.dir/codegen
 
 # clean rule for target.
-tests/basic/CMakeFiles/main.dir/clean:
-	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/main.dir/build.make tests/basic/CMakeFiles/main.dir/clean
-.PHONY : tests/basic/CMakeFiles/main.dir/clean
+tests/basic/CMakeFiles/basic.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/basic/CMakeFiles/basic.dir/build.make tests/basic/CMakeFiles/basic.dir/clean
+.PHONY : tests/basic/CMakeFiles/basic.dir/clean
+
+#=============================================================================
+# Target rules for target tests/lhapdf/CMakeFiles/lhapdf.dir
+
+# All Build rule for target.
+tests/lhapdf/CMakeFiles/lhapdf.dir/all:
+	$(MAKE) $(MAKESILENT) -f tests/lhapdf/CMakeFiles/lhapdf.dir/build.make tests/lhapdf/CMakeFiles/lhapdf.dir/depend
+	$(MAKE) $(MAKESILENT) -f tests/lhapdf/CMakeFiles/lhapdf.dir/build.make tests/lhapdf/CMakeFiles/lhapdf.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=16,17 "Built target lhapdf"
+.PHONY : tests/lhapdf/CMakeFiles/lhapdf.dir/all
+
+# Build rule for subdir invocation for target.
+tests/lhapdf/CMakeFiles/lhapdf.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/lhapdf/CMakeFiles/lhapdf.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles 0
+.PHONY : tests/lhapdf/CMakeFiles/lhapdf.dir/rule
+
+# Convenience name for target.
+lhapdf: tests/lhapdf/CMakeFiles/lhapdf.dir/rule
+.PHONY : lhapdf
+
+# codegen rule for target.
+tests/lhapdf/CMakeFiles/lhapdf.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f tests/lhapdf/CMakeFiles/lhapdf.dir/build.make tests/lhapdf/CMakeFiles/lhapdf.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/champson/Dropbox/Coding/ColSim/build/CMakeFiles --progress-num=16,17 "Finished codegen for target lhapdf"
+.PHONY : tests/lhapdf/CMakeFiles/lhapdf.dir/codegen
+
+# clean rule for target.
+tests/lhapdf/CMakeFiles/lhapdf.dir/clean:
+	$(MAKE) $(MAKESILENT) -f tests/lhapdf/CMakeFiles/lhapdf.dir/build.make tests/lhapdf/CMakeFiles/lhapdf.dir/clean
+.PHONY : tests/lhapdf/CMakeFiles/lhapdf.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

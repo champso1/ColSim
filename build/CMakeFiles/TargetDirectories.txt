@@ -3,6 +3,9 @@
 /home/champson/Dropbox/Coding/ColSim/build/CMakeFiles/rebuild_cache.dir
 /home/champson/Dropbox/Coding/ColSim/build/tests/CMakeFiles/edit_cache.dir
 /home/champson/Dropbox/Coding/ColSim/build/tests/CMakeFiles/rebuild_cache.dir
-/home/champson/Dropbox/Coding/ColSim/build/tests/basic/CMakeFiles/main.dir
+/home/champson/Dropbox/Coding/ColSim/build/tests/basic/CMakeFiles/basic.dir
 /home/champson/Dropbox/Coding/ColSim/build/tests/basic/CMakeFiles/edit_cache.dir
 /home/champson/Dropbox/Coding/ColSim/build/tests/basic/CMakeFiles/rebuild_cache.dir
+/home/champson/Dropbox/Coding/ColSim/build/tests/lhapdf/CMakeFiles/lhapdf.dir
+/home/champson/Dropbox/Coding/ColSim/build/tests/lhapdf/CMakeFiles/edit_cache.dir
+/home/champson/Dropbox/Coding/ColSim/build/tests/lhapdf/CMakeFiles/rebuild_cache.dir

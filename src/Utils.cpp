@@ -46,6 +46,15 @@ namespace ColSim {
 	}
 
 
+	std::string& Erase(std::string& str, const std::string& in) {
+		UInt64 inPos = str.find(in);
+		if (inPos = std::string::npos)
+			return str;
+		str.erase(inPos, in.length());
+		return str;
+	}
+
+
 	// instantiate string-specific versions
 	template Bool FindInVec<std::string>(const std::vector<std::string>&, std::string);
 	template UInt32 CountInVec(const std::vector<std::string>&, std::string);
