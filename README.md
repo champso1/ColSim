@@ -14,7 +14,9 @@ This library is currently only able to be built on Unix-like systems, i.e. Windo
   - gcc (any remotely recent version that supports C++11 should work fine)
   - [LHAPDF](https://www.lhapdf.org/): this library is used to query for PDF information which is required for the calculation of the partonic cross section. The website contains sufficient information to get it downloaded, built, and installed on your system. Ensure that your environment variables are set in such a way that the CMake files can be found by this project.
   - (Optional) Doxygen (and its dependencies): used for generating the documentation.
+  - (Optional) Gnuplot: used for generating plots of kinematic variables. Not integrated fully yet, so currently this is an optional dependency.
   
+  With the exception of LHAPDF, these can all be installed via your systems package manager without too much issue.
   
   
 ### Compiling
@@ -51,3 +53,14 @@ The configuration file contains some important information. Namely:
 ### Examples
 
 Currently there is only one example located in `examples/basic`, which illustrates the computation of the cross section for the process PP2Zg2ll, and generates 10 random events, printing the most recently generated one to the screen. To run this (and any other future examples), navigate to the corresponding directory and invoke the usual CMake commands (minus the installation). You'll be left with an executable whose name matches the example name. You can play around with configuration file options (only the PDF setname/number, ECM, and number of iterations), or generate more events.
+
+
+# TODO
+
+Outlined in this section are a handful of some of the next major items on my TODO list to get completed next:
+
+- Finalize LHE file implementation and integration with the main part of the program to allow easy loading of events from/saving events to LHE files. There is a direct consequence to this and it is that it will allow much easier comparison with tools like Pythia8 and MadGraph5.
+- Further interaction with the Plotting functionality via Gnuplot to plot histograms of some of the kinematic variables for the process. This also allows more easier comparison with Pythia8.
+- Implementation of some more processes.
+
+The issues tab of this repository also contains a few other, more open ended things or goals which are not as pertinent as these, such as specific code organization stuff.
