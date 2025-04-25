@@ -2,24 +2,28 @@
 #include "ColSim/Constants.hpp"
 #include "ColSim/Math.hpp"
 #include "ColSim/Logger.hpp"
+
 #include <fstream>
+#include <cfloat>
 
 namespace ColSim {
 
 	
 	Double PartonShower::tGamma(Double z, Double alphaSOver) {
-		return -2.0*alphaSOver*CF*std::log(1.0-z);
+		return -2.0*alphaSOver*CF*std::log1p(-z);
 	}
 
 	Double PartonShower::tGammaInverse(Double r, Double alphaSOver) {
 		return 1.0 - std::exp(-0.5*r / (CF*alphaSOver));
 	}
 
-	Double PartonShower::zpOver(Double t, Double Qcut) {
+	Double PartonShower::zpOver(Double t) {
+		Double Qcut = SETTINGS.evolEnergyCutoff;
 		return 1.0-std::sqrt(Qcut*Qcut/t);
 	}
 
-	Double PartonShower::zmOver(Double t, Double Qcut) {
+	Double PartonShower::zmOver(Double t) {
+		Double Qcut = SETTINGS.evolEnergyCutoff;
 		return std::sqrt(Qcut*Qcut/t);
 	}
 
@@ -35,12 +39,11 @@ namespace ColSim {
 	Double PartonShower::emissionScaleFunc(Double log_T_Q2, void* _params) {
 		Params* params = reinterpret_cast<Params*>(_params);
 		Double Q = params->Q;
-		Double Qcut = params->Qcut;
 		Double r = params->r;
 		Double alphaSOver = params->alphaSOver;
 
 		Double t = Q*Q * std::exp(log_T_Q2);
-		Double rho = tGamma(zpOver(t,Qcut), alphaSOver) - tGamma(zmOver(t,Qcut), alphaSOver);
+		Double rho = tGamma(zpOver(t), alphaSOver) - tGamma(zmOver(t), alphaSOver);
 
 		return log_T_Q2 - (1.0/rho)*std::log(r);
 	}
@@ -58,16 +61,19 @@ namespace ColSim {
 	    Double root = Bisection(emissionFunc, min, max, 1000, tolerance, reinterpret_cast<void*>(&params));
 
 		Double tSol = Q*Q * std::exp(root);
-		if (emissionScaleFunc(root, reinterpret_cast<void*>(&params)) > tolerance)
-			return 0.0;
+
+		// if we get something bad
+		if (std::abs(emissionScaleFunc(root, reinterpret_cast<void*>(&params))) > tolerance)
+			return DBL_MAX;
+		
 		return tSol;
 	}
 
 
 
-	Double PartonShower::getZEmission(Double t, Double Qcut, Double r, Double alphaSOver) {
-	    return tGammaInverse( tGamma(zmOver(t, Qcut), alphaSOver) +
-						  r * (tGamma(zpOver(t, Qcut), alphaSOver) - tGammaInverse(zmOver(t, Qcut), alphaSOver)), alphaSOver);
+	Double PartonShower::getZEmission(Double t, Double r, Double alphaSOver) {
+	    return tGammaInverse( tGamma(zmOver(t), alphaSOver) +
+						  r * (tGamma(zpOver(t), alphaSOver) - tGamma(zmOver(t), alphaSOver)), alphaSOver);
 	}
 	
 	Double PartonShower::getPT_2(Double t, Double z) {
@@ -86,37 +92,39 @@ namespace ColSim {
 		Double r4 = randDouble();
 
 		Double t = getTEmission(Q, Qcut, r1, tfac, alphaSOver);
-		if (t == 0.0) 
+		if (t == DBL_MAX) 
 			return Emission{t, 1.0, 0.0, 0.0, generated, false};
 		
 
-		Double z = getZEmission(t, Qcut, r2, alphaSOver);
+		Double z = getZEmission(t, r2, alphaSOver);
 		Double pT_2 = getPT_2(t, z);
 		Double m_2 = getM_2(t, z);
 
-		LOGGER.logMessage("Candidate emission scale: sqrt(t) = %.9lf", std::sqrt(t));
-		LOGGER.logMessage("Candidate momentum fraction: z = %.9lf", z);
-		LOGGER.logMessage("Candidate transverse momentum squared: pt^2 = %.9lf", pT_2);
+		//LOGGER.logMessage("Candidate emission scale: sqrt(t) = %.9lf", std::sqrt(t));
+		//LOGGER.logMessage("Candidate momentum fraction: z = %.9lf", z);
+		//LOGGER.logMessage("Candidate transverse momentum squared: pt^2 = %.9lf", pT_2);
 		
 		if (pT_2 < 0.0) {
 			generated = false;
-			LOGGER.logMessage("Emission rejected due to negative pT^2");
+			//LOGGER.logMessage("Emission rejected due to negative pT^2");
 		}
 
 		Double splittingFnOverRatio = Pqq(z) / PqqOver(z);
 		if (splittingFnOverRatio < r3) {
-		    LOGGER.logMessage("Emission rejected due to splitting function overestimate: p = %.9lf R = %.9lf", splittingFnOverRatio, r3);
+		    //LOGGER.logMessage("Emission rejected due to splitting function overestimate: p = %.9lf R = %.9lf", splittingFnOverRatio, r3);
 			generated = false;
+
+			
 		} else {
-			LOGGER.logMessage("Emission NOT rejected due to splitting function overestimate: p = %.9lf R = %.9lf", splittingFnOverRatio, r3);
+			//LOGGER.logMessage("Emission NOT rejected due to splitting function overestimate: p = %.9lf R = %.9lf", splittingFnOverRatio, r3);
 		}
 
-		Double alphaSOverRatio = alphaS.alphaSActual() / alphaS.alphaSOver();
+		Double alphaSOverRatio = alphaS.getAlphaSActual(t,z) / alphaSOver;
 		if (alphaSOverRatio < r4) {
 			generated = false;
-			LOGGER.logMessage("Emission rejected due to alpha_s overestimate: a_s = %.9lf R = %.9lf", alphaSOverRatio, r4);
+			//LOGGER.logMessage("Emission rejected due to alpha_s overestimate: a_s = %.9lf R = %.9lf", alphaSOverRatio, r4);
 		} else {
-			LOGGER.logMessage("Emission NOT rejected due to alpha_s overestimate: a_s = %.9lf R = %.9lf", alphaSOverRatio, r4);
+			//LOGGER.logMessage("Emission NOT rejected due to alpha_s overestimate: a_s = %.9lf R = %.9lf", alphaSOverRatio, r4);
 		}
 
 		if (!generated) {
@@ -149,19 +157,35 @@ namespace ColSim {
 			z = emission.z;
 			Double pT_2 = emission.pT_2;
 			Double m_2  = emission.m_2;
-			Bool generated = emission.generated;
 			Bool continueEvolution = emission.continueEvol;
 
 			if (!continueEvolution) {
-				LOGGER.logMessage("No further emissions.");
-				LOGGER.logMessage("Total emissions: %u", numEmissions);
-				LOGGER.logMessage("-------");
+				// LOGGER.logMessage("No further emissions.");
+				// LOGGER.logMessage("Total emissions: %u", numEmissions);
+#ifdef DEBUG
+				if (numEmissions > 0)
+					logEmissionsTable(emissions);
+#endif				
 				return emissions;
 			}
 
 			if (t < (fac_cutoff*tMin)) {
-				LOGGER.logMessage("Emission rejected at sqrt(t) = %.9lf since it is below cutoff", std::sqrt(t));
-				LOGGER.logMessage("Total emissions: %u", numEmissions);
+				// LOGGER.logMessage("Emission rejected at sqrt(t) = %.9lf since it is below cutoff", std::sqrt(t));
+				// LOGGER.logMessage("Total emissions: %u", numEmissions);
+#ifdef DEBUG
+				if (numEmissions > 0)
+					logEmissionsTable(emissions);
+#endif
+				return emissions;
+			}
+
+			if (z < 0.0) {
+				// LOGGER.logMessage("Emission rejected at sqrt(t) = %.9lf since z<0: z=%.9lf", std::sqrt(t), z);
+			    // LOGGER.logMessage("Total emissions: %u", numEmissions);
+#ifdef DEBUG
+				if (numEmissions > 0)
+					logEmissionsTable(emissions);
+#endif
 				return emissions;
 			}
 
@@ -169,19 +193,23 @@ namespace ColSim {
 				emissions.emplace_back(std::sqrt(t), z, std::sqrt(pT_2), std::sqrt(m_2), true, true);
 				numEmissions++;
 
-				LOGGER.logMessage("Successful emission at sqrt(t) = %.9lf", std::sqrt(t));
-				LOGGER.logMessage("  z = %.9lf", z);
-				LOGGER.logMessage("  pT = %.9lf", std::sqrt(pT_2));
-				LOGGER.logMessage("  m = %.9lf",  std::sqrt(m_2));
+				// LOGGER.logMessage("Successful emission at sqrt(t) = %.9lf", std::sqrt(t));
+				// LOGGER.logMessage("  z = %.9lf", z);
+				// LOGGER.logMessage("  pT = %.9lf", std::sqrt(pT_2));
+				// LOGGER.logMessage("  m = %.9lf",  std::sqrt(m_2));
 			}
 		}
 
-		LOGGER.logMessage("No futher emissions");
-		LOGGER.logMessage("Total emission: %u", numEmissions);
+		// LOGGER.logMessage("No futher emissions");
+		// LOGGER.logMessage("Total emission: %u", numEmissions);
 
 		// simply list all of the emissions in a nice format
-		logEmissionsTable(emissions);
-		
+#ifdef DEBUG
+		if (numEmissions > 0)
+			logEmissionsTable(emissions);
+#endif
+
+		LOGGER.logMessage("Evolution completed!");
 		return emissions;
 	}
 
@@ -196,7 +224,7 @@ namespace ColSim {
 
 		UInt32 count = 0;
 		for (const Emission& e : emissions) {
-			LOGGER.logMessage("| %d | %3d | %19.17lf | %18.16lf |     %17.15     |",
+			LOGGER.logMessage("| %d |      %8.3lf      | %19.15lf | %18.15lf |     %17.14lf     |",
 							  count++, e.t, 1.0-e.z, std::sqrt(e.pT_2), std::sqrt(e.m_2));
 		}
 		

@@ -4,17 +4,17 @@
 
 namespace ColSim {
 
-	Double AlphaS::Beta0(UInt8 nf) {
+	Double AlphaS::Beta0(UInt8 nf) const {
 		Double Nf = static_cast<Double>(nf);
 		return (11.0/6.0)*CA - (2.0/3.0)*TR*Nf;
 	}
 
-	Double AlphaS::Beta1(UInt8 nf) {
+	Double AlphaS::Beta1(UInt8 nf) const {
 		Double Nf = static_cast<Double>(nf);
 		return (17.0/6.0)*std::pow(CA,2) - ((5.0/3.0)*CA + CF)*TR*Nf;
 	}
 
-	Double AlphaS::calcAlphaS_LO(Double t) {
+	Double AlphaS::calcAlphaS_LO(Double t) const {
 		// determine reference scale given t
 		Double tref, asref;
 		Double beta0;
@@ -42,7 +42,7 @@ namespace ColSim {
 		return 1.0/((1.0/asref) + beta0*std::log(t/tref));
 	}
 
-	Double AlphaS::calcAlphaS_NLO(Double t) {
+	Double AlphaS::calcAlphaS_NLO(Double t) const {
 		// determine reference scale given t
 		Double tref, asref;
 		Double beta0, beta1;
@@ -75,22 +75,40 @@ namespace ColSim {
 	}
 
 
-	Double AlphaS::calcAlphaS(Double t) {
+	Double AlphaS::alphaSScale(Double t, Double z) const {
+		if (SETTINGS.fixedScale)
+			return fixedScaleVal;
+		else
+			return z*(1.0-z)*sqrt(t);
+
+		
+	}
+
+
+	Double AlphaS::calcAlphaS(Double t) const {
 		switch (order) {
 			case 0: return calcAlphaS_LO(t);
 			case 1: return calcAlphaS_NLO(t);
 		}
-		return 0.0; // just in case
+		return 0.0; // just avoid error
 	}
 
 
-	Double AlphaS::alphaSActual() {
-	    const LHAPDF::PDF* pdf = SETTINGS.pdf;
-		return pdf->alphasQ(Q_SCALE_FIXED) / (2.0*PI);
+	Double AlphaS::getAlphaSActual(Double t, Double z) const {
+		Double scale = alphaSScale(t, z);
+		if (scale < SETTINGS.evolEnergyCutoff)
+			scale = SETTINGS.evolEnergyCutoff;
+		return calcAlphaS(t)/(2.0*M_PI);
+		
 	}
 
-	Double AlphaS::alphaSOver() {
-		return alphaSActual();
+	Double AlphaS::getAlphaSOver(Double t) const {
+		Double scale;
+		if (SETTINGS.fixedScale)
+			scale = fixedScaleVal;
+		else
+			scale = t;
+		return calcAlphaS(scale);
 	}
 
 	

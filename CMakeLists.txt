@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.20)
 project(ColSim LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
+# default install to project directory
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
+
+# enforce C++11
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
@@ -9,6 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # main executable
 file(GLOB_RECURSE sources src/*.cpp include/*.hpp)
 add_library(ColSim STATIC ${sources})
+target_compile_options(ColSim PUBLIC -Wall -Wextra -O2)
 
 # include headers
 target_include_directories(ColSim PUBLIC

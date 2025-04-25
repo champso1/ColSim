@@ -4,10 +4,10 @@
 #include "ColSim/Logger.hpp"
 #include "ColSim/PartonShower.hpp"
 #include "ColSim/Settings.hpp"
-
 #include "ColSim/PhaseSpace.hpp"
 #include "ColSim/Math.hpp"
 #include "ColSim/Utils.hpp"
+#include "ColSim/Gnuplot.hpp"
 
 #include <algorithm>
 #include <fstream>
@@ -17,89 +17,165 @@
 
 namespace ColSim {
 
-	ColSimMain::ColSimMain(const std::string& configFilePath, const std::string& logFilePath) {
+	ColSimMain::ColSimMain(const std::string& logFilePath) {
 	    // initalize the logger with the default file path
 	    LOGGER.initFile(logFilePath);
 
-		// read in the settings from the configuration file
+ 		// -- random number generation --
+		UInt32 seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+		engine.seed(seed);
+		//engine.seed(DEFAULT_RANDOM_SEED);
+		randDouble = std::bind(distribution, engine);
+	}
+
+	ColSimMain::~ColSimMain() {
+		LOGGER.logMessage("Shutting down...");
+	}
+
+
+	void ColSimMain::init(InitFlag initFlag, const std::string& configFilePath) {
+		flag = initFlag;
+		
+		// read in the settings from the given configuration file
 		SETTINGS.loadConfigFile(configFilePath);
 
-		// load the hard process given in the config file
-		loadHardProcess(SETTINGS.Process);
-		loadPartonShower(SETTINGS.doPhotonEmission, SETTINGS.doGluonEmission);
-
-
-		// other miscellaneous setup
-
-		// -- random number generation --
-		//UInt32 seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
-		//engine.seed(seed);
-		engine.seed(DEFAULT_RANDOM_SEED);
-		randDouble = std::bind(distribution, engine);
+		// load the process given in the config file
+		switch(initFlag) {
+			case HARD_SCATTERING:
+				loadHardProcess(SETTINGS.Process);
+				break;
+			case PARTON_SHOWERING:
+				partonShower = std::unique_ptr<PartonShower>(new GluonShower());
+				break;
+		}
 	}
 
 
 
 
 	void ColSimMain::loadHardProcess(const std::string& processStr) {
-		std::vector<std::string> processTokens;
-		SplitString(processStr, "2", processTokens);
+		if (processStr.compare("PP2Zg2ll") != 0)
+			LOGGER.logAbort("Only 'PP2Zg2ll' has been implemented.");
 
-		// ensure there are three "steps", i.e. an initial state,
-		// an intermediate gauge boson, and a final state
-		if (processTokens.size() == 2) {
-			LOGGER.logAbort("Must specify an intermediate particle!");
-		} else if ((processTokens.size() < 2)
-				   || (processTokens.size() > 3)) {
-			LOGGER.logAbort("Invalid number of process steps.");
-		}
-
-		// determine if the initial state is PP or ee
-		// (anything else is forbidden currently)
-		if ((processTokens[0].compare("PP") != 0)
-			&& (processTokens[0].compare("ee") != 0)) {
-			LOGGER.logAbort("Initial state must be PP or ee.");
-		}
-
-		// determine if the intermediate state is Zg or not
-		if (processTokens[1].compare("Zg") != 0) {
-			LOGGER.logAbort("Intermediate state must be Zg");
-		}
-
-		// lastly, ensure that the final state is two leptons
-		std::vector<std::string> availableFinalStates{
-			"ee", "ll", "mumu"
-		};
-		if (std::find(availableFinalStates.begin(), availableFinalStates.end(),
-					  processTokens[2]) == availableFinalStates.end()) {
-			LOGGER.logAbort("Invalid final state. Must be ee, ll or mumu.");
-		}
-
-		// now set the hard process according to the final state
-		if (processTokens[0].compare("ee") == 0)
-			LOGGER.logAbort("ee initial state not implemented!");
-		else {
-			if (processTokens[2].compare("ee") == 0)
-				LOGGER.logAbort("ee final state not implemented!");
-			else if (processTokens[2].compare("ll") == 0) {
-				hardProcess = std::unique_ptr<HardProcess>(new PP2Zg2ll());
-				return;
-			} else
-				LOGGER.logAbort("mumu final state not implemented");
-		}
-		
-		LOGGER.logAbort("UNREACHABLE");
+		hardProcess = std::unique_ptr<HardProcess>(new PP2Zg2ll());
+		//hardProcess = std::unique_ptr<HardProcess>(new PP2Jets());
 	}
 
-	void ColSimMain::loadPartonShower(Bool doPhotonEmission, Bool doGluonEmission) {
-		if (doPhotonEmission) {}
-		else if (doGluonEmission)
-			partonShower = std::unique_ptr<PartonShower>(new GluonShower());
-		else
-		    LOGGER.logError("Invalid combination of photon/gluon emission bits.");
-	}
 
 	void ColSimMain::start() {
+		switch(flag) {
+			case HARD_SCATTERING:
+				start_hardProcess();
+				break;
+			case PARTON_SHOWERING:
+				start_partonShower();
+				break;
+		}
+	};
+	
+
+	void ColSimMain::generateEvent() {
+		switch(flag) {
+			case HARD_SCATTERING:
+				generateEvent_hardProcess();
+				break;
+			case PARTON_SHOWERING:
+				generateEvent_partonShower();
+				break;
+		}
+	}
+
+	void ColSimMain::generateEvents(UInt32 numEvents) {
+		plotPoints.clear();
+		emissionRecord.clear();
+		while (numEvents > 0) {
+			generateEvent();
+			numEvents--;
+		}
+	}
+
+
+	void ColSimMain::generatePlots() {
+		switch(flag) {
+			case HARD_SCATTERING:
+				generatePlots_hardProcess();
+				break;
+			case PARTON_SHOWERING:
+				generatePlots_partonShower();
+				break;
+		}
+	}
+
+	
+	void ColSimMain::stop() {
+		// does nothing at the moment!
+		LOGGER.logMessage("Stopped event generation!");
+		return;
+	}
+
+
+
+
+	void ColSimMain::generateEvent_hardProcess() {
+		PhaseSpace phaseSpace = hardProcess->getPhaseSpace();
+
+		std::vector<Double> phaseSpacePoints;
+		phaseSpace.fillPhaseSpace(phaseSpacePoints);
+		const std::vector<Double>& deltas = phaseSpace.getDeltas();
+		
+		HardProcess::Result res = hardProcess->dSigma(phaseSpacePoints);
+		Double weight = res.weight;
+		// scale the weight
+		for (Double d : deltas)
+			weight *= d;
+
+		// hit-or-miss to see if it actually works
+		Double weightRatio = weight/maxWeight;
+		Double randNum = randDouble();
+
+		while (randNum > weightRatio) {
+			phaseSpace.fillPhaseSpace(phaseSpacePoints);
+			res = hardProcess->dSigma(phaseSpacePoints);
+			weight = res.weight;
+			for (Double d : deltas)
+				weight *= d;
+
+			// ensure to calculate the new weight and another random number
+			weightRatio = weight/maxWeight;
+			randNum = randDouble();
+		}
+
+		// generate a list of particles
+		std::vector<Particle> particles;
+		hardProcess->generateParticles(particles);
+		eventRecord.emplace_back(Event(weight, particles));
+
+		// plot the phase space points and the chosen additional values
+		std::vector<Double> _plotPoints = Join(phaseSpacePoints, res.additionalVals);
+	    plotPoints.emplace_back(_plotPoints);
+	}
+
+	void ColSimMain::generateEvent_partonShower() {
+		const Double Q0 = SETTINGS.initialEvolEnergy;
+		const Double Qf = SETTINGS.evolEnergyCutoff;
+		
+		Double scale;
+		if (SETTINGS.fixedScale)
+			scale = Q0/2.0;
+		else {
+			scale = Qf;
+		}
+
+		const AlphaS& asRef = partonShower->getAlphaSRef();
+		emissionRecord.emplace_back(partonShower->Evolve(Q0, Qf, asRef.getAlphaSOver(scale)));
+	}
+
+
+	void ColSimMain::start_hardProcess() {
+		// ensure to reset ranges in the event that
+		// we have changed a config file variable between calculations
+		hardProcess->getPhaseSpace().setRanges();
+		
 		LOGGER.logMessage("Calculating cross section via Monte Carlo integration...");
 		HardProcessResult res = hardProcess->calculate();
 		LOGGER.logMessage("Finished!");
@@ -109,56 +185,77 @@ namespace ColSim {
 		crossSection = res.result;
 		crossSectionError = res.error;
 		maxWeight = res.maxWeight;
-		maxPSPoints = std::move(res.maxPoints); // not that it matters
+		maxPSPoints = res.maxPoints;
 
-		// log some of this stuff
 		LOGGER.logMessage("Maximum weight achieved: %.9lf", maxWeight);
-	};
-	
+	}
 
-	const Event& ColSimMain::generateEvent() {
-		// todo: make this actually do something!
+	void ColSimMain::start_partonShower() {
+		// nothing else to initialize
+		LOGGER.logMessage("Initialized parton shower event generation.");
+	}
+
+
+	void ColSimMain::generatePlots_hardProcess() {
+		LOGGER.logMessage("Generating plots...");
+
+		PhaseSpace& phaseSpace = hardProcess->getPhaseSpace();
+
+		Gnuplot plot;
+		plot.setHistInfo(phaseSpace.getMins(),
+						 phaseSpace.getMaxes(),
+						 phaseSpace.getDeltas(), 25);
+		std::vector<std::string> plotColNames(phaseSpace.getNames());
+		plot.openDataFile("events.dat", plotColNames);
+	    plot.addDataPoints(plotPoints);
+
+		LOGGER.logMessage("Saved datafile in 'events.dat'");
+		LOGGER.logMessage("Creating temporary Gnuplot script files for plot generation...");
+
+		// plot.setTitles(phaseSpace.getTitles());
+		plot.setXLabels(phaseSpace.getXLabels());
+		plot.setYLabels(phaseSpace.getYLabels());
 		
-		// std::vector<PartonShower::Emission> emissions = partonShower->Evolve(1000.0, 1.0, 0.01627095);
+		plot.plot();
 
-		std::vector<Double> phaseSpacePoints, deltas;
-		hardProcess->getPhaseSpace().fillPhaseSpace(phaseSpacePoints);
-		deltas = hardProcess->getPhaseSpace().getDeltas();
-		
-		Double weight = hardProcess->dSigma(phaseSpacePoints);
-		for (Double d : deltas)
-			weight *= d;
-
-		// hit-or-miss to see if it actually works
-		Double weightRatio = weight/maxWeight;
-		Double randNum = randDouble();
-
-		UInt32 numRejectedEvents = 0;
-		
-		while (randNum > weightRatio) {
-			numRejectedEvents++;
-			hardProcess->getPhaseSpace().fillPhaseSpace(phaseSpacePoints);
-			weight = hardProcess->dSigma(phaseSpacePoints);
-			for (Double d : deltas)
-				weight *= d;
-
-			weightRatio = weight/maxWeight;
-			randNum = randDouble();
-		}
-		LOGGER.logMessage("Rejected %u events for this iteration.",
-						  numRejectedEvents);
-		
-		std::vector<Particle> particles;
-		hardProcess->generateParticles(particles);
-
-		eventRecord.emplace_back(Event(weight, particles));
-		
-		return eventRecord.back();
+		LOGGER.logMessage("Plots saved! Check the 'plots' directory to view them.");
 	}
 
 	
-	void ColSimMain::stop() {
-		// does nothing at the moment!
-		return;
+	void ColSimMain::generatePlots_partonShower() {
+		const std::vector<std::string> plotNames{"t", "pT", "m"};
+
+		std::vector<Double> v;
+	    for (const std::vector<PartonShower::Emission>& emissions : emissionRecord) {
+			for (const PartonShower::Emission& e : emissions) {
+				v.push_back(std::sqrt(e.t));
+				v.push_back(std::sqrt(e.pT_2));
+				v.push_back(std::sqrt(e.m_2));
+				plotPoints.emplace_back(v);
+				v.clear();
+			}
+		}
+
+		std::vector<Double>
+			min{0.0, 0.0, 0.0},
+			max{1000.0, 20.0, 25.0},
+			delta{1000.0, 20.0, 25.0};
+
+		
+		Gnuplot plot;
+		plot.setHistInfo(min, max, delta, 100);
+		plot.setXLabels({"√t", "p_T", "m_{virt}"});
+		plot.setYLabels({"Events", "Events", "Events"});
+		plot.openDataFile("emissions.dat", plotNames);
+		plot.addDataPoints(plotPoints);
+
+		LOGGER.logMessage("Saved datafile in 'emissions.dat'");
+		LOGGER.logMessage("Creating temporary Gnuplot script files for plot generation...");
+
+		
+		
+		plot.plot();
+
+		LOGGER.logMessage("Plots saved! Check the 'plots' directory to view them.");
 	}
 }; // namespace ColSim

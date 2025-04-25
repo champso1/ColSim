@@ -1,9 +1,9 @@
-# Center-of-Mass energy: measured in TeV
-ECM=14.0
+# -----------------------------
+# ---- General Information ----
+# -----------------------------
 
-# pdf information
+# pdf set to use
 PDFName=CT18NNLO
-PDFMemberNo=0
 
 
 # ---------------------------
@@ -14,10 +14,38 @@ Process=PP2Zg2ll
 # number of evaluations of the differential cross section in the Monte Carlo integration
 NumXSIterations=1000000
 
+# Center-of-Mass energy: measured in TeV
+ECM=14.0
+
+# the lowest energy used in calculating the cross section
+MinCutoffEnergy=60.0
+
+# these are intermediate calculated parameters used in a change-of-variables transformation
+# during the cross section calculation -- there is no real physical significance
+# this is taken to also be the minimum cutoff energy, and shouldn't go below it,
+# but can be set higher
+TransformationEnergy=60.0
+
+
 
 
 # --------------------------
 # ---- Parton Showering ----
 # --------------------------
-AllowPhotonEmission=no
-AllowGluonEmission=yes
+
+# the initial energy that the quark carries before starting evolution (in GeV)
+# usually set to be characteristic of a proton-proton subprocess,
+# on the order of ~ 1 GeV
+InitialEvolEnergy=1000.0
+
+# whether to fix the factorization scale throughout the
+# evolution or vary it with the evolution scale
+# NOTE: fixing the scale misses out on some higher order effects
+# Yes or No
+FixedScale=Yes
+
+# the energy cutoff reached before evolution stops (in Gev)
+# this is the energy scale in which perturbative QCD stops being valid
+# it can be slightly varied around this value, ideally it wouldn't go any lower,
+# but can be set higher
+EvolutionEnergyCutoff=1.0

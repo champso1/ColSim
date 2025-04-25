@@ -7,31 +7,79 @@
 
 namespace ColSim {
 	void PhaseSpace::fillDelta() {
-		for (int i=0; i<getDim(); i++)
-			delta[i] = max[i] - min[i];
+		delta.clear();
+		for (UInt i=0; i<min.size(); i++)
+			delta.push_back(max.at(i) - min.at(i));
 	}
 
 	void PhaseSpace::fillPhaseSpace(std::vector<Double>& vec) {
-		// ensure that there is capacity to do this
-		vec.resize(3);
-	    for (UInt32 i=0; i<getDim(); i++) {
-			Double val = randDouble()*getDeltas()[i] + getMins()[i];
-			vec[i] = val;
+		vec.clear();
+	    for (UInt32 i=0; i<numDims; i++) {
+			Double val = randDouble()*delta[i] + min[i];
+			vec.push_back(val);
 		}
 	}
+
 	
 	
-	PhaseSpace_TauYCosth::PhaseSpace_TauYCosth() : PhaseSpace(3) {
-		// initialize rho ranges
+	
+	PhaseSpace_TauYCosth::PhaseSpace_TauYCosth()
+		: PhaseSpace(3,
+					 {"cos(theta)", "rho", "y", "Q", "x1"},
+					 {"cos(θ)", "ρ", "rapidity", "Q", "x_1"},
+					 {"cos(θ)", "ρ", "y", "Q [GeV]", "x_1"},
+					 {"Events", "Events", "Events", "Events", "Events"})
+	{
+		
+	    setRanges();
+	}
+
+	void PhaseSpace_TauYCosth::setRanges() {
 		const Double S = SETTINGS.S;
+		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
+		const double MASS_TR_2 = SETTINGS.transEnergy_2;
+		const double Q_MIN_2 = SETTINGS.minCutoffEnergy_2;
+
+		// initialize rho ranges
 		rhoMin = std::atan((Q_MIN_2-MASS_TR_2) / (WIDTH_TR*MASS_TR));
 		rhoMax = std::atan((S-MASS_TR_2) / (WIDTH_TR*MASS_TR));
 		deltaRho = rhoMax - rhoMin;
 
-		// set ranges
-		min[0] = -1.0; max[0] = 1.0;      // cosTheta
-		min[1] = rhoMin; max[1] = rhoMax; // rho
-		min[2] = 0.0; max[2] = 1.0;       // y
+		min.clear(); max.clear();
+		// set ranges for main variables
+		min.push_back(-1.0); max.push_back(1.0);      // cosTheta
+		min.push_back(rhoMin); max.push_back(rhoMax); // rho
+		min.push_back(0.0); max.push_back(1.0);       // y
+
+		// Q and x1, which aren't themselves
+		// independent phase space variables
+		// but are variables of interest later on
+		min.push_back(60.0); max.push_back(500.0);  // Q
+		min.push_back(0.0); max.push_back(1.0);    // x
+
+		// fill the deltas
+		fillDelta();
+	}
+
+
+
+
+
+
+
+	PhaseSpace_EtEta::PhaseSpace_EtEta()
+		: PhaseSpace(2, {"E_t", "eta"})
+	{
+		setRanges();
+	}
+
+
+	void PhaseSpace_EtEta::setRanges() {
+		// set ranges for main variables
+		min.push_back(0.1); max.push_back(500.0); // E_t
+		min.push_back(-5.0); max.push_back(5.0);    // eta
+
+		// fill the deltas
 		fillDelta();
 	}
 }; // namespace ColSim

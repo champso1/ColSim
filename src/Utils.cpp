@@ -16,7 +16,7 @@ namespace ColSim {
 		// so that we can tokenize it
 		char buf[256];
 		memset(buf, 0, 256);
-		strncpy(buf, str, strlen(str));
+		strncpy(buf, str, (sizeof buf)-1);
 
 		char* ptr;
 		ptr = strtok(buf, delim);
@@ -48,14 +48,39 @@ namespace ColSim {
 
 	std::string& Erase(std::string& str, const std::string& in) {
 		UInt64 inPos = str.find(in);
-		if (inPos = std::string::npos)
+		if ((inPos = std::string::npos))
 			return str;
 		str.erase(inPos, in.length());
 		return str;
 	}
 
 
-	// instantiate string-specific versions
+	std::string& Replace(std::string& str,
+						 const std::string& orig,
+						 const std::string& rep)
+	{
+		USize origPos;
+		while ((origPos = str.find(orig)) != std::string::npos) {
+			str.replace(origPos, orig.length(), rep);
+		}
+
+		return str;
+	}
+
+	template <typename T>
+	std::vector<T> Join(const std::vector<T>& v1, const std::vector<T>& v2) {
+		std::vector<T> res;
+		for (auto x : v1)
+			res.emplace_back(x);
+		for (auto x : v2)
+			res.emplace_back(x);
+
+		return res;
+	}
+
+
+	// template instantiation for a few specific types
 	template Bool FindInVec<std::string>(const std::vector<std::string>&, std::string);
 	template UInt32 CountInVec(const std::vector<std::string>&, std::string);
+	template std::vector<Double> Join(const std::vector<Double>& v1, const std::vector<Double>& v2);
 }

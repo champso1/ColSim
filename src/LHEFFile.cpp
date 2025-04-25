@@ -111,6 +111,7 @@ namespace ColSim {
 			for (const Event& e : events) {
 				std::vector<std::string> particleStrings;
 				for (const EventParticle& p : e.particles) {
+					(void)p; // avoid unused variable warning
 					std::stringstream particleString;
 				    particleString << "TODO: particle :^)";
 					particleStrings.emplace_back(particleString.str());

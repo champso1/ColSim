@@ -14,8 +14,6 @@ namespace ColSim {
 		Double n = 0;
 		Double val = DBL_MAX;
 
-		LOGGER.logMessage("Converging via Newton-Raphson...");
-		
 		while ((std::abs(val) > precision) && (n < numEvals)) {
 			Double CD = (func(x0+dx/2.0, params) - func(x0-dx/2.0, params))/dx;
 			Double Dx = -func(x0,params)/CD;
@@ -23,8 +21,6 @@ namespace ColSim {
 			x0 += Dx;
 			val = func(x0,params);
 			n += 1;
-
-			LOGGER.logMessage("\tx0 -> %.9lf", x0);
 		}
 
 		if (n >= numEvals) 
@@ -38,8 +34,6 @@ namespace ColSim {
 		UInt32 count = 0;
 		Double range = max - min;
 		Double midpoint = DBL_MAX; // arbitrary large number to obviously indicate error
-		
-		LOGGER.logMessage("Converging via bisection...");
 		
 		while ((range > precision) && (count < numEvals)) {
 			midpoint = (min+max)/2.0;
@@ -57,8 +51,6 @@ namespace ColSim {
 
 			count += 1;
 			range = max - min;
-
-		    LOGGER.logMessage("\t%u [%.9lf, %.9lf]", count, min, max);
 		}
 
 		return midpoint;
@@ -81,20 +73,20 @@ namespace ColSim {
 		// by definition of monte carlo integration
 		Double deltaX[params.numDims];
 		// Double* delta_x = new Double[params.numDims];
-		for (int i=0; i<params.numDims; i++) 
+		for (UInt i=0; i<params.numDims; i++)
 			deltaX[i] = params.max[i] - params.min[i];
 
 		
-		for (int i=0; i<params.numEvals; i++) {
+		for (UInt i=0; i<params.numEvals; i++) {
 			// grab the random value for each dim
-			for (int j=0; j<params.numDims; j++) 
+			for (UInt j=0; j<params.numDims; j++) 
 			    points[j] = params.min[j] + randDouble() * deltaX[j];
 			
 			// calculate that sheisse
 			Double weight = (params.func)(points);
 	
 			// multiply by the deltas of the independent variables
-			for (int j=0; j<params.numDims; j++)
+			for (UInt j=0; j<params.numDims; j++)
 			    weight *= deltaX[j];
 
 			// add to total weight
@@ -104,7 +96,7 @@ namespace ColSim {
 			// set max stuff
 			if (weight > result.maxWeight) {
 				result.maxWeight = weight;
-				for (int j=0; j<params.numDims; j++)
+				for (UInt j=0; j<params.numDims; j++)
 					result.maxPoints[j] = points[j];
 			}
 		}

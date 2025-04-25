@@ -13,6 +13,7 @@
 namespace ColSim {
 
 
+	
 	HardProcessResult HardProcess::calculate() {
 		USize numDims = phaseSpace->getDim();
 		
@@ -27,14 +28,15 @@ namespace ColSim {
 		// here we get delta values which we need for Monte Carlo
 	    const std::vector<Double>& deltas = phaseSpace->getDeltas();
 		
-		for (int i=0; i<SETTINGS.numXSIterations; i++) {
+		for (UInt i=0; i<SETTINGS.numXSIterations; i++) {
 			phaseSpace->fillPhaseSpace(points);
 			
 			// calculate that sheisse
-			Double weight = dSigma(points);
+			Result dsigmaRes = dSigma(points);
+			Double weight = dsigmaRes.weight;
     
 			// multiply by the deltas of the independent variables
-			for (int j=0; j<numDims; j++)
+			for (UInt j=0; j<numDims; j++)
 			    weight *= deltas[j];
 
 			// add to total weight
@@ -44,7 +46,7 @@ namespace ColSim {
 			// set maxes
 			if (weight > res.maxWeight) {
 				res.maxWeight = weight;
-				for (int j=0; j<numDims; j++)
+				for (UInt j=0; j<numDims; j++)
 					res.maxPoints[j] = points[j];
 			}
 		}
@@ -135,10 +137,9 @@ namespace ColSim {
 	}
 
 
-	Double PP2Zg2ll::dSigma(const std::vector<Double>& phaseSpacePoints) {
-		LHAPDF::PDF* pdf = SETTINGS.pdf;
-		const Double ECM = SETTINGS.ECM;
+	HardProcess::Result PP2Zg2ll::dSigma(const std::vector<Double>& phaseSpacePoints) {
 		const Double S = SETTINGS.S; // ECM^2
+		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
 
 		// independent variables
 		const Double cosTheta = phaseSpacePoints[0];
@@ -161,14 +162,16 @@ namespace ColSim {
 		// go ahead and scale it this way here
 		weight *= (jacobian * deltaY);
 		weight /= (x1 * x2);
-		
-		return weight;
+
+		// pass through the COM energy and the momentum fraction (x1)
+		return HardProcess::Result(weight, {std::sqrt(s_hat), x1});
 	}
 
 
 	void PP2Zg2ll::generateParticles(std::vector<Particle>& particles) {
-		Double S = SETTINGS.S;
-		Double ECM = SETTINGS.ECM;
+		const Double S = SETTINGS.S;
+		const Double ECM = SETTINGS.ECM;
+		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
 
 		std::vector<Double> phaseSpacePoints;
 		phaseSpace->fillPhaseSpace(phaseSpacePoints);
@@ -178,13 +181,10 @@ namespace ColSim {
 		const double rand_y   = phaseSpacePoints[2];
 
 		// other variables
-	    const Double jacobian = (MASS_TR*WIDTH_TR) / (std::pow(std::cos(rho),2) * S);
-
 		const Double s_hat = MASS_TR*WIDTH_TR*std::tan(rho) + std::pow(MASS_TR,2);
 		const Double Q = std::sqrt(s_hat);
 
 		const Double yMax   = -0.5*std::log(s_hat/S);
-		const Double deltaY = 2.0*yMax;
 		const Double y      = (2.0*rand_y - 1.0)*yMax;
 
 		const Double x1 = std::sqrt(s_hat/S)*std::exp(y);
@@ -206,6 +206,170 @@ namespace ColSim {
 					13, "l1");
 		particles.emplace_back(FourVector(0.5*Q, -0.5*Q*sinTheta*cosPhi, -0.5*Q*sinTheta*sinPhi, -0.5*Q*cosTheta).zBoost(beta),
 					-13, "l2");
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	PP2Jets::PP2Jets() {
+		phaseSpace = std::unique_ptr<PhaseSpace>(new PhaseSpace_EtEta());
+	}
+
+
+	Double PP2Jets::qqprime2qqprime(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (4*M_PI*alpha_s*alpha_s)/(9*s*s) * ((s*s +  u*u)/(t*t));
+	}
+	Double PP2Jets::qqprimebar2qqprimebar(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		return qqprime2qqprime(eta3, eta4, E_t, alpha_s);
+	}
+
+	// scattering of identical quarks
+	Double PP2Jets::qq2qq(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (4.0*M_PI*alpha_s*alpha_s)/(9.0*s*s) * ((s*s + u*u)/(t*t) + (t*t + u*u)/(s*s) - (2.0/3.0)*((s*s)/(u*t)));
+	}
+
+	Double PP2Jets::qqbar2qprimeqprimebar(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+
+		return (4.0*M_PI*alpha_s*alpha_s)/(9.0*s*s) * ((t*t + u*u)/(s*s));
+	}
+
+
+	Double PP2Jets::gg2gg(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (9.0*M_PI*alpha_s*alpha_s) / (2.0 * s*s) * (3 - (t*u)/(s*s) - (s*u)/(t*t) - (s*t)/(u*u));
+    
+	}
+	Double PP2Jets::qqbar2gg(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (32.0*M_PI*alpha_s*alpha_s)/(27.0*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
+	}
+	Double PP2Jets::gg2qqbar(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (M_PI * alpha_s*alpha_s)/(6*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
+	}
+
+	Double PP2Jets::qg2qg(Double eta3, Double eta4, Double E_t, Double alpha_s) {
+		Double eta_star = calcEtaStar(eta3, eta4);
+		Double s = calcSHat(eta_star, E_t);
+		Double t = calcTHat(eta_star, E_t);
+		Double u = calcUHat(eta_star, E_t);
+
+		return (4.0*M_PI*alpha_s*alpha_s)/(9*s*s) * (-u/s - s/u + (9.0/4.0)*((s*s + u*u)/(t*t)));
+	}
+
+
+	HardProcess::Result PP2Jets::dSigma(const std::vector<Double>& phaseSpacePoints) {
+		const Double Et = phaseSpacePoints[0];
+		const Double eta3 = phaseSpacePoints[1];
+
+		// retrieve/calculate quantities required to grab PDF data
+		const Double S = SETTINGS.S;
+		LHAPDF::PDF* pdf = SETTINGS.pdf;
+		Double alphaS = pdf->alphasQ2(S);
+		Double x1 = calcX1(eta3, _eta4, Et);
+		Double x2 = calcX2(eta3, _eta4, Et);
+		const std::vector<UInt32> pids{1, 2, 3, 4, 5, 21}; // vector of PDG IDs for all quarks (but top) and gluon
+
+		// must add all processes
+		Double total = 0.0;
+
+		// q + q' -> q + q'
+		Double total_qqprime2qqprime = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			for (int j=i+1; i<pids.size(); i++) {
+				total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[j], x2, S)
+					* (1.0/M_PI)*qqprime2qqprime(eta3, _eta4, Et, alphaS);
+			}
+		}
+		total += total_qqprime2qqprime;
+
+		// q + q -> q + q
+		Double total_qq2qq = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[i], x2, S)
+				* (1.0/M_PI)*qq2qq(eta3, _eta4, Et, alphaS);
+		}
+		total += total_qq2qq;
+
+		// q + qb -> q' + qb'
+		Double total_qqbar2qprimeqprimebar = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[i], x2, S)
+				* (1.0/M_PI)*qqbar2qprimeqprimebar(eta3, _eta4, Et, alphaS);
+		}
+		total += total_qqbar2qprimeqprimebar;
+
+		
+		// g + g -> g + g
+	    total += pdf->xfxQ2(21, x1, S) * pdf->xfxQ2(21, x2, S) * gg2gg(eta3, _eta4, Et, alphaS);
+
+		// q + qb -> g + g
+		Double total_qqbar2gg = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[i], x2, S)
+				* (1.0/M_PI)*qqbar2gg(eta3, _eta4, Et, alphaS);
+		}
+		total += total_qqbar2gg;
+
+		// g + g -> q + qb
+		Double total_gg2qqbar = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[i], x2, S)
+				* (1.0/M_PI)*gg2qqbar(eta3, _eta4, Et, alphaS);
+		}
+		total += total_gg2qqbar;
+
+		// q + g -> q + g
+		Double total_qg2qg = 0.0;
+		for (UInt i=0; i<pids.size(); i++) {
+			total_qqprime2qqprime += pdf->xfxQ2(pids[i], x1, S)*pdf->xfxQ2(pids[i], x2, S)
+				* (1.0/M_PI)*qg2qg(eta3, _eta4, Et, alphaS);
+		}
+		total += 2*total_qg2qg;
+
+		total *= 2.0*Et;
+		return Result(total);
+	}
+
+	void PP2Jets::generateParticles(std::vector<Particle>& momenta) {
+		// does nothing yet
+		(void)momenta;
+		return;
 	}
 
 }; // namespace ColSim
