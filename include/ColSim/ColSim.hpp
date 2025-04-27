@@ -45,7 +45,7 @@ namespace ColSim {
 		/** Initializes either the hard scattering or parton showering process
 		 *  depending on the passed flag.
 		 */
-	    void init(InitFlag initFlag, const std::string& configFilePath="config.in");
+	    void init(InitFlag initFlag, const std::string& configFilePath="");
 
 		/** Calculates the cross section and does a few more initialization
 		 *  steps in preparation for event generation.
@@ -54,7 +54,7 @@ namespace ColSim {
 		
 		/** Generates a single event and stores it in the event record.
 		 */
-		void generateEvent();
+		Bool generateEvent();
 
 		/** Generates @a numEvents events and stores them in the event record.
 		 */
@@ -123,13 +123,13 @@ namespace ColSim {
 		 *  if the user passed in the @a HARD_PROCESS
 		 *  initialization flag.
 		 */
-		void generateEvent_hardProcess();
+		Bool generateEvent_hardProcess();
 
 		/** Internal function called from @a generateEvent()
 		 *  if the user passed in the @a PARTON_SHOWER
 		 *  initialization flag.
 		 */
-		void generateEvent_partonShower();
+		Bool generateEvent_partonShower();
 
 		/** Internal function called from @a generatePlots()
 		 *  if the user passed in the @a HARD_PROCESS

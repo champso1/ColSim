@@ -36,13 +36,17 @@ namespace ColSim {
 
 	void PhaseSpace_TauYCosth::setRanges() {
 		const Double S = SETTINGS.S;
-		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
-		const double MASS_TR_2 = SETTINGS.transEnergy_2;
+		const double E_TR_2 = SETTINGS.transEnergy_2;
 		const double Q_MIN_2 = SETTINGS.minCutoffEnergy_2;
 
 		// initialize rho ranges
-		rhoMin = std::atan((Q_MIN_2-MASS_TR_2) / (WIDTH_TR*MASS_TR));
-		rhoMax = std::atan((S-MASS_TR_2) / (WIDTH_TR*MASS_TR));
+		// rhoMin = std::atan((Q_MIN_2-E_TR_2) / (E_TR_2));
+		// rhoMax = std::atan((S-E_TR_2) / (E_TR_2));
+		rhoMin = std::atan(Q_MIN_2-E_TR_2) / E_TR_2;
+		rhoMax = std::atan((S-E_TR_2) / (E_TR_2));
+
+		
+		
 		deltaRho = rhoMax - rhoMin;
 
 		min.clear(); max.clear();

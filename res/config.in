@@ -9,8 +9,6 @@ PDFName=CT18NNLO
 # ---------------------------
 # ----- Hard Scattering -----
 # ---------------------------
-Process=PP2Zg2ll
-
 # number of evaluations of the differential cross section in the Monte Carlo integration
 NumXSIterations=1000000
 
@@ -27,15 +25,13 @@ MinCutoffEnergy=60.0
 TransformationEnergy=60.0
 
 
-
-
 # --------------------------
 # ---- Parton Showering ----
 # --------------------------
 
 # the initial energy that the quark carries before starting evolution (in GeV)
 # usually set to be characteristic of a proton-proton subprocess,
-# on the order of ~ 1 GeV
+# on the order of ~ 1 TeV
 InitialEvolEnergy=1000.0
 
 # whether to fix the factorization scale throughout the

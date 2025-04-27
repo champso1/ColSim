@@ -74,23 +74,23 @@ namespace ColSim {
 	};
 	
 
-	void ColSimMain::generateEvent() {
+	Bool ColSimMain::generateEvent() {
 		switch(flag) {
 			case HARD_SCATTERING:
-				generateEvent_hardProcess();
-				break;
+				return generateEvent_hardProcess();
 			case PARTON_SHOWERING:
-				generateEvent_partonShower();
-				break;
+				return generateEvent_partonShower();
 		}
+
+		return true; // unreachable, but gcc shuts the fuck up
 	}
 
 	void ColSimMain::generateEvents(UInt32 numEvents) {
 		plotPoints.clear();
 		emissionRecord.clear();
 		while (numEvents > 0) {
-			generateEvent();
-			numEvents--;
+			if(generateEvent())
+				numEvents--;
 		}
 	}
 
@@ -116,7 +116,7 @@ namespace ColSim {
 
 
 
-	void ColSimMain::generateEvent_hardProcess() {
+	Bool ColSimMain::generateEvent_hardProcess() {
 		PhaseSpace phaseSpace = hardProcess->getPhaseSpace();
 
 		std::vector<Double> phaseSpacePoints;
@@ -124,6 +124,9 @@ namespace ColSim {
 		const std::vector<Double>& deltas = phaseSpace.getDeltas();
 		
 		HardProcess::Result res = hardProcess->dSigma(phaseSpacePoints);
+		if (res == HardProcess::Result::invalidResult())
+			return false;
+		
 		Double weight = res.weight;
 		// scale the weight
 		for (Double d : deltas)
@@ -153,10 +156,12 @@ namespace ColSim {
 		// plot the phase space points and the chosen additional values
 		std::vector<Double> _plotPoints = Join(phaseSpacePoints, res.additionalVals);
 	    plotPoints.emplace_back(_plotPoints);
+
+		return true;
 	}
 
-	void ColSimMain::generateEvent_partonShower() {
-		const Double Q0 = SETTINGS.initialEvolEnergy;
+	Bool ColSimMain::generateEvent_partonShower() {
+	    const Double Q0 = SETTINGS.initialEvolEnergy;
 		const Double Qf = SETTINGS.evolEnergyCutoff;
 		
 		Double scale;
@@ -168,6 +173,7 @@ namespace ColSim {
 
 		const AlphaS& asRef = partonShower->getAlphaSRef();
 		emissionRecord.emplace_back(partonShower->Evolve(Q0, Qf, asRef.getAlphaSOver(scale)));
+		return true;
 	}
 
 
@@ -192,7 +198,7 @@ namespace ColSim {
 
 	void ColSimMain::start_partonShower() {
 		// nothing else to initialize
-		LOGGER.logMessage("Initialized parton shower event generation.");
+		LOGGER.logMessage("Starting parton shower event generation.");
 	}
 
 
@@ -204,7 +210,7 @@ namespace ColSim {
 		Gnuplot plot;
 		plot.setHistInfo(phaseSpace.getMins(),
 						 phaseSpace.getMaxes(),
-						 phaseSpace.getDeltas(), 25);
+						 phaseSpace.getDeltas(), 100);
 		std::vector<std::string> plotColNames(phaseSpace.getNames());
 		plot.openDataFile("events.dat", plotColNames);
 	    plot.addDataPoints(plotPoints);
@@ -236,10 +242,14 @@ namespace ColSim {
 			}
 		}
 
+		// maximum for t is directly cutoff at this value,
+		// so we can fix it here
+		double tMax = std::sqrt(SETTINGS.initialEvolEnergy);
+		
 		std::vector<Double>
 			min{0.0, 0.0, 0.0},
-			max{1000.0, 20.0, 25.0},
-			delta{1000.0, 20.0, 25.0};
+			max{tMax, 20.0, 25.0},
+			delta{tMax, 20.0, 25.0};
 
 		
 		Gnuplot plot;

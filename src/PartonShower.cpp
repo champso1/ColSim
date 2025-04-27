@@ -149,7 +149,7 @@ namespace ColSim {
 		Double t = Q*Q;
 		Double z = 1.0;
 
-		LOGGER.logMessage("Generating evolution for Q = %.9lf", Q);
+		//LOGGER.logMessage("Generating evolution for Q = %.9lf", Q);
 
 		while((std::sqrt(t)*z) > std::sqrt(fac_cutoff * tMin)) {
 			Emission emission = generateEmission(std::sqrt(t)*z, std::sqrt(tMin), fac_t, alphaSOver);
@@ -207,9 +207,11 @@ namespace ColSim {
 #ifdef DEBUG
 		if (numEmissions > 0)
 			logEmissionsTable(emissions);
+#else
+		(void)numEmissions;
 #endif
 
-		LOGGER.logMessage("Evolution completed!");
+		// LOGGER.logMessage("Evolution completed! Performed %d emissions.", emissions.size());
 		return emissions;
 	}
 

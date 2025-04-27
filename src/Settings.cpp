@@ -22,25 +22,27 @@ namespace ColSim {
 	
 
 	void Settings::loadConfigFile(const std::string& configFilePath) {
-		std::ifstream configFileStream;
-		configFileStream.open(configFilePath);
-		if (!configFileStream) 
-			throw std::runtime_error("Could not open config file " + configFilePath);
+		if (configFilePath.length() > 0) {
+			std::ifstream configFileStream;
+			configFileStream.open(configFilePath);
+			if (!configFileStream) 
+				LOGGER.logAbort("Could not open config file '%s'", configFilePath.c_str());
 
-		std::string line;
-		std::vector<std::string> tokens;
-		while (std::getline(configFileStream, line)) {
-			// skip empty lines and comments
-			if ((line.size() <= 1) || (line[0] == '#'))
-				continue;
+			std::string line;
+			std::vector<std::string> tokens;
+			while (std::getline(configFileStream, line)) {
+				// skip empty lines and comments
+				if ((line.size() <= 1) || (line[0] == '#'))
+					continue;
 		   
-			SplitString(line, "=", tokens);
+				SplitString(line, "=", tokens);
 
-			settings.insert({tokens[0], tokens[1]});
+				settings.insert({tokens[0], tokens[1]});
 			
-			tokens.clear();
+				tokens.clear();
+			}
+			configFileStream.close();
 		}
-		configFileStream.close();
 
 	    SettingsMap::const_iterator it;
 
@@ -95,21 +97,24 @@ namespace ColSim {
 				LOGGER.logAbort("The specified cutoff energy %.2lf is less than the absolute minimum of 1.0.");
 			else if (minCutoffEnergy > 500.0)
 				LOGGER.logWarning("The specified cutoff energy %.2lf is higher than ordinary and will miss out on some phase space elements.");
+			minCutoffEnergy_2 = minCutoffEnergy*minCutoffEnergy;
 		} else {
 			minCutoffEnergy = 60.0;
+			minCutoffEnergy_2 = 60.0*60.0;
 		}
 		LOGGER.logMessage("Setting minimum cutoff energy for cross section calculation to %.3lf", minCutoffEnergy);
 
 		// transformation mass/width (also for phase space points): REQUIRED
 		if(doesKeyExist(it, "TransformationEnergy")) {
 			transEnergy = std::stod(it->second);
-			if (transEnergy < 20.0) {
-				LOGGER.logAbort("The specified transformation energy %.2lf is less than the absolute minimum of 20.0.");
-			} else if (minCutoffEnergy > 500.0)
-				LOGGER.logWarning("The specified transformation energy %.2lf is higher than ordinary"
-								  "and may impact the calculation.");
+			if (transEnergy < minCutoffEnergy) {
+				LOGGER.logAbort("The specified transformation energy %.2lf cannot be less than Q_min.");
+			} else if (minCutoffEnergy > std::sqrt(ECM))
+				LOGGER.logAbort("The specified transformation energy %.2lf cannot be larger than sqrt(ECM).");
+			transEnergy_2 = transEnergy*transEnergy;
 		} else {
-			transEnergy = 60.0;
+			transEnergy = minCutoffEnergy;
+			transEnergy_2 = transEnergy*transEnergy;
 		}
 		LOGGER.logMessage("Setting transformation mass/energy to %.2lf", transEnergy);
 
@@ -118,8 +123,10 @@ namespace ColSim {
 			initialEvolEnergy = std::stod(it->second);
 			if (initialEvolEnergy < 100.0 || initialEvolEnergy > 5000.0)
 				LOGGER.logWarning("Initial evolution energy of %.2lf is out of ordinary range of [100.0,5000.0] GeV.");
+			initialEvolEnergy_2 = initialEvolEnergy*initialEvolEnergy;
 		} else {
 			initialEvolEnergy = 1000.0;
+			initialEvolEnergy_2 = 1000.0*1000.0;
 		}
 		LOGGER.logMessage("Will start parton evolution at %.2lf", initialEvolEnergy);
 

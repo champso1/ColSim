@@ -15,21 +15,13 @@ int main() {
 	colsim.start();
 
 	// generate events
-	colsim.generateEvents(100000);
+	colsim.generateEvents(1000000);
+
+	// generate plots
+	colsim.generatePlots();
 
 	// stop/deinitialize generation
 	colsim.stop();
-
-	std::vector<double> pt, e;
-	for (const Event& event: colsim.getEventRecord()) {
-		
-	}
-
-	std::ofstream outfile("data.dat");
-	for (uint i=0; i<pt.size(); i++) {
-		outfile << pt.at(i) << '\t' << e.at(i) << '\n';
-	}
-	outfile.close();
     
    	return 0;
 }

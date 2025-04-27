@@ -33,6 +33,13 @@ namespace ColSim {
 			
 			// calculate that sheisse
 			Result dsigmaRes = dSigma(points);
+
+			// if it is invalid, we must redo
+			if (dsigmaRes == Result::invalidResult()) {
+				i--;
+				continue;
+			}
+			
 			Double weight = dsigmaRes.weight;
     
 			// multiply by the deltas of the independent variables
@@ -139,7 +146,7 @@ namespace ColSim {
 
 	HardProcess::Result PP2Zg2ll::dSigma(const std::vector<Double>& phaseSpacePoints) {
 		const Double S = SETTINGS.S; // ECM^2
-		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
+		const double E_TR_2 = SETTINGS.transEnergy_2;
 
 		// independent variables
 		const Double cosTheta = phaseSpacePoints[0];
@@ -147,9 +154,9 @@ namespace ColSim {
 		const double rand_y   = phaseSpacePoints[2];
 
 		// other variables
-	    const Double jacobian = (MASS_TR*WIDTH_TR) / (std::pow(std::cos(rho),2) * S);
+	    const Double jacobian = (E_TR_2) / (std::cos(rho)*std::cos(rho) * S);
 
-		const Double s_hat = MASS_TR*WIDTH_TR*std::tan(rho) + std::pow(MASS_TR,2);
+		const Double s_hat = E_TR_2*std::tan(rho) + E_TR_2;
 
 		const Double yMax   = -0.5*std::log(s_hat/S);
 		const Double deltaY = 2.0*yMax;
@@ -157,6 +164,11 @@ namespace ColSim {
 
 		const Double x1 = std::sqrt(s_hat/S)*std::exp(y);
 		const Double x2 = std::sqrt(s_hat/S)*std::exp(-y);
+
+		if ((x1 > 1.0 || x1 < 0.0) || (x2 > 1.0 || x2 <0.0)) {
+			LOGGER.logWarning("Encountered invalid x1 or x2: (%.4lf,%.4lf). Retrying...", x1, x2);
+			return HardProcess::Result::invalidResult();
+		}
 
 		Double weight = computeWeight(s_hat, x1, x2, cosTheta);
 		// go ahead and scale it this way here
@@ -171,7 +183,7 @@ namespace ColSim {
 	void PP2Zg2ll::generateParticles(std::vector<Particle>& particles) {
 		const Double S = SETTINGS.S;
 		const Double ECM = SETTINGS.ECM;
-		const double MASS_TR = SETTINGS.transEnergy, WIDTH_TR = SETTINGS.transEnergy;
+		const double E_TR_2 = SETTINGS.transEnergy_2;
 
 		std::vector<Double> phaseSpacePoints;
 		phaseSpace->fillPhaseSpace(phaseSpacePoints);
@@ -181,7 +193,7 @@ namespace ColSim {
 		const double rand_y   = phaseSpacePoints[2];
 
 		// other variables
-		const Double s_hat = MASS_TR*WIDTH_TR*std::tan(rho) + std::pow(MASS_TR,2);
+		const Double s_hat = E_TR_2*std::tan(rho) + E_TR_2;
 		const Double Q = std::sqrt(s_hat);
 
 		const Double yMax   = -0.5*std::log(s_hat/S);

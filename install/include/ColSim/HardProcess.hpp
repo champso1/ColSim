@@ -71,6 +71,19 @@ namespace ColSim {
 			Result(const Double _weight, std::initializer_list<Double> vals = {})
 				: weight(_weight), additionalVals(vals)
 			{}
+
+
+			static inline Result invalidResult() {
+				return Result(DBL_MAX, {});
+			}
+
+			Bool operator==(const Result& other) {
+				if (weight == other.weight) {
+					if (additionalVals == other.additionalVals)
+						return true;
+				}
+				return false;
+			}
 		};
 
 		
