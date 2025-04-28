@@ -66,7 +66,7 @@ namespace ColSim {
 		if(doesKeyExist(it, "PDFName"))
 			PDFName = it->second;
 		else
-			PDFName = "cteq6l1";
+			PDFName = "CT18NNLO";
 		LHAPDF::setVerbosity(0);  // don't print anything, LHAPDF!
 		pdf = LHAPDF::mkPDF(PDFName, 0);
 
@@ -134,13 +134,15 @@ namespace ColSim {
 		// used fixed renormalization scale
 		if(doesKeyExist(it, "FixedScale")) {
 			fixedScale = settings.at("FixedScale").compare("Yes") == 0;
-			if (fixedScale) {
-				LOGGER.logMessage("Using fixed scale (mass of Z boson) for parton evolution.");
-				LOGGER.logWarning("A fixed scale misses out on some higher order effects.");
-			}
-			else {
-				LOGGER.logMessage("Using variable scale for parton evolution.");
-			}
+		} else {
+			fixedScale = true;
+		}
+		if (fixedScale) {
+			LOGGER.logMessage("Using fixed scale (mass of Z boson) for parton evolution.");
+			LOGGER.logWarning("A fixed scale misses out on some higher order effects.");
+		}
+		else {
+			LOGGER.logMessage("Using variable scale for parton evolution.");
 		}
 
 		if(doesKeyExist(it, "EvolutionEnergyCutoff")) {
