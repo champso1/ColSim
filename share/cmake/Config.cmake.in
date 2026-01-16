@@ -1,9 +1,11 @@
 # boiler plate, filled it automatically
 @PACKAGE_INIT@
 
-# include the exported targets, all the important stuff
-include("${CMAKE_CURRENT_LIST_DIR}/ColSimTargets.cmake")
+include(CMakeFindDependencyMacro)
+find_dependency(LHAPDF REQUIRED)
 
-# set custom variables to be used in other projects' cmake files
-set(ColSim_INCLUDE_DIRS "${CMAKE_CURRENT_LIST_DIR}/../../../include")
-set(ColSim_LIBRARIES ColSim::ColSim)
+# include the exported targets, all the important stuff
+include("${CMAKE_CURRENT_LIST_DIR}/colsimTargets.cmake")
+set_and_check(COLSIM_INCLUDE_DIR "@PACKAGE_INSTALL_INCLUDE_DIR@ ${LHAPDF_INCLUDE_DIR}")
+set(COLSIM_LIBRARIES colsim::colsim ${LHAPDF_LIBRARY})
+check_required_components(colsim)

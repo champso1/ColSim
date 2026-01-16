@@ -14,7 +14,6 @@ This library is currently only able to be built on Unix-like systems, i.e. Windo
   - gcc (any remotely recent version that supports C++11 should work fine)
   - [LHAPDF](https://www.lhapdf.org/): this library is used to query for PDF information which is required for the calculation of the partonic cross section. The website contains sufficient information to get it downloaded, built, and installed on your system.
   - Gnuplot: used for generating plots of kinematic variables
-  - (Optional) Doxygen (and its dependencies): used for generating automatic documentation (not fully finished)
 
   With the exception of LHAPDF, these can all be installed via your systems package manager without too much issue. As a note: LHAPDF cannot be built on Windows; you must use WSL, or have a Linux/Mac machine (Mac does have some additional installation steps -- see the website).
   
@@ -62,18 +61,12 @@ The parton showering parameters are as follows:
 - **FixedScale**: This is a Yes/No parameter. The value of the coupling term alpha\_s for the interaction between the quarks and the gluons in principle changes with the energy scale, but not enough in this regime to substantially impact the physics. Of course, letting it vary with the quark's energy scale leads to slightly higher accuracy, but again, the impact is not significant enough to motivate me to keep it one way or the other.
 - **EvolutionEnergyCutoff**: As described earlier, this cutoff is due to the fact that at lower energies than this our theory breaks down. Here, since we are directly evolving the quark to these low energies we want to have this cutoff be at the absolute minimum to capture as many emissions as possible. The code will actually error out if the user tries to set this to a value lower than 1 GeV and warns for a value >10 GeV.
 
-These can either be left alone, meaning they take their default values in the program, they can be specified within the program itself via the SETTINGS class; for instance, to change the ECM to 16.7 TeV, one would put:
 
-```cpp
-SETTINGS.readString("ECM=16.7");
-```
-
-There is also the option for a configuration file. In the `res` directory in the top level of the project is a configuration file titled `config.in`, which contains all of the above variables, their descriptions, and their default values. This can be placed in the same directory as an executable, and by passing its name/path into into the `init()` function of ColSimMain, it will read from their instead. This looks like:
+There is the option for a configuration file. In the `res` directory in the top level of the project is a configuration file titled `config.in`, which contains all of the above variables, their descriptions, and their default values. This can be placed in the same directory as an executable, and by passing its name/path into into the `init()` function of ColSimMain, it will read from their instead. This looks like:
 
 ```cpp
 colsim.init(ColSimMain::HARD_SCATTERING, "config.in");
 ```
-
 
 
 ### Examples

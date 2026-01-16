@@ -1,32 +1,53 @@
 cmake_minimum_required(VERSION 3.20)
 project(ColSim LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-
-# default install to project directory
 set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/install)
-
-# enforce C++11
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(sources
+  src/alphas.cpp
+  src/colsim.cpp
+  src/fourvector.cpp
+  src/hard_process.cpp
+  src/math.cpp
+  src/parton_shower.cpp
+  src/phase_space.cpp
+  src/settings.cpp)
+set(headers
+  include/colsim/alphas.hpp
+  include/colsim/colsim.hpp
+  include/colsim/common.hpp
+  include/colsim/event.hpp
+  include/colsim/fourvector.hpp
+  include/colsim/gnuplot.hpp
+  include/colsim/hard_process.hpp
+  include/colsim/math.hpp
+  include/colsim/particle.hpp
+  include/colsim/parton_shower.hpp
+  include/colsim/phase_space.hpp
+  include/colsim/settings.hpp
+  include/colsim/utils.hpp)
 
-# main executable
-file(GLOB_RECURSE sources src/*.cpp include/*.hpp)
-add_library(ColSim STATIC ${sources})
-target_compile_options(ColSim PUBLIC -Wall -Wextra -O2)
+add_library(colsim STATIC)
+target_sources(colsim PRIVATE ${sources})
+target_sources(colsim PUBLIC
+  FILE_SET colsim_headers
+  TYPE HEADERS
+  BASE_DIRS ${CMAKE_SOURCE_DIR}/include
+  FILES ${headers})
 
-# include headers
-target_include_directories(ColSim PUBLIC
+target_compile_options(colsim PUBLIC -Wall -Wextra)
+
+target_include_directories(colsim PUBLIC
   $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-)
+  $<INSTALL_INTERFACE:include>)
 
 
-# link with LHAPDF
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/share/cmake")
 find_package(LHAPDF REQUIRED)
-target_include_directories(ColSim PUBLIC ${LHAPDF_INCLUDE_DIRS})
-target_link_libraries(ColSim PUBLIC ${LHAPDF_LIBRARIES})
+target_include_directories(colsim PUBLIC ${LHAPDF_INCLUDE_DIRS})
+target_link_libraries(colsim PUBLIC ${LHAPDF_LIBRARIES})
 
 # --------------------------
 #   Doxygen/Documentation
@@ -50,47 +71,27 @@ endif(BUILD_DOCS)
 
 # --- installing --- #
 
-# gives us CMAKE_INSTALL_<x>DIR
-# that is set by CMAKE_INSTALL_PREFIX
+
 include(GNUInstallDirs)
+install(TARGETS colsim
+  EXPORT colsimTargets
+  FILE_SET colsim_headers
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT colsimTargets
+  FILE colsimTargets.cmake
+  NAMESPACE colsim::
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/colsim)
 
-# installs the artifacts, and registers the target
-# with an "export set"
-# which essentially includes essential project info
-install(TARGETS ColSim
-  EXPORT ColSimTargets
-  ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
-
-# installs the export set as well
-install(EXPORT ColSimTargets
-  FILE ColSimTargets.cmake
-  NAMESPACE ColSim::
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
-)
-
-# these commands set up and install Cmake config files
-# so that other projects can find this library
-# it uses the Cmake.config.in file
-# which these commands fill with necessary info
-# it also will include the exported targets
 include(CMakePackageConfigHelpers)
+set(INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_INCLUDEDIR})
 configure_package_config_file(
   ${CMAKE_SOURCE_DIR}/share/cmake/Config.cmake.in
-  ${CMAKE_BINARY_DIR}/ColSimConfig.cmake
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
-)
-
-# installs the above files
+  ${CMAKE_BINARY_DIR}/colsimConfig.cmake
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/colsim
+  PATH_VARS INSTALL_INCLUDE_DIR)
 install(FILES
-  ${CMAKE_BINARY_DIR}/ColSimConfig.cmake
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ColSim
-)
+  ${CMAKE_BINARY_DIR}/colsimConfig.cmake
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/colsim)
 
 
-# the first install command only set some metadata up
-# it only installs binaries and such
-# so we have to manually install headers
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+add_subdirectory(examples)

@@ -1,19 +1,22 @@
 #ifndef __COLSIM_HPP
 #define __COLSIM_HPP
 
-#include "ColSim/Types.hpp"
-#include "ColSim/HardProcess.hpp"
-#include "ColSim/PartonShower.hpp"
-#include "ColSim/Settings.hpp"
-#include "ColSim/Logger.hpp"
-
 #include <memory>
 
-namespace ColSim {
+#include "colsim/common.hpp"
+#include "colsim/hard_process.hpp"
+#include "colsim/parton_shower.hpp"
+#include "colsim/settings.hpp"
+#include "colsim/utils.hpp"
+#include "colsim/event.hpp"
 
-	class ColSimMain {
+namespace colsim
+{
+	class ColSimMain
+	{
 	public:
-		enum InitFlag {
+		enum InitFlag
+		{
 			HARD_SCATTERING,
 			PARTON_SHOWERING
 		};
@@ -21,31 +24,29 @@ namespace ColSim {
 	private:
 		InitFlag flag;
 		
-		std::unique_ptr<HardProcess> hardProcess;
-		std::unique_ptr<PartonShower> partonShower;
+		std::unique_ptr<HardProcess> _hard_process;
+		std::unique_ptr<PartonShower> _parton_shower;
 
 		// values set after cross section calculation
-		Double crossSection, crossSectionError;
-		Double maxWeight;
-		std::vector<Double> maxPSPoints;
+		double _xs, _xs_error;
+		double _max_weight;
+		std::vector<double> _max_ps_points;
 
 		// the main event/emission records
-		std::vector<Event> eventRecord;
-		std::vector<std::vector<PartonShower::Emission>> emissionRecord;
+		std::vector<Event> _event_record;
+		std::vector<std::vector<PartonShower::Emission>> _emission_record;
 		
 		// list of plot points for generating plots
-		 std::vector<std::vector<Double>> plotPoints;
+		 std::vector<std::vector<double>> _plot_points;
 		
 	public:
-		ColSimMain(const std::string& logFilePath="out.log");
+		ColSimMain(std::string const& log_file_path="out.log");
 		~ColSimMain();
-
-		
 
 		/** Initializes either the hard scattering or parton showering process
 		 *  depending on the passed flag.
 		 */
-	    void init(InitFlag initFlag, const std::string& configFilePath="");
+	    void init(InitFlag initFlag, std::string const& config_file_path="");
 
 		/** Calculates the cross section and does a few more initialization
 		 *  steps in preparation for event generation.
@@ -54,24 +55,24 @@ namespace ColSim {
 		
 		/** Generates a single event and stores it in the event record.
 		 */
-		Bool generateEvent();
+		bool generate_event();
 
 		/** Generates @a numEvents events and stores them in the event record.
 		 */
-		void generateEvents(UInt32 numEvents);
+		void generate_events(uint numEvents);
 
 		/** Returns a const reference to the last event generated.
 		 */
-		inline Event& getLastEvent() {
-			return eventRecord.back();
+		inline Event& get_last_event() {
+			return _event_record.back();
 		}
 
-		inline const std::vector<Event>& getEventRecord() const { return eventRecord; }
+		inline std::vector<Event> const& getEventRecord() const { return _event_record; }
 
 		/** Takes the all of the accepted phase space points
 		 *  and generates plots with them.
 		 */
-		void generatePlots();
+		void generate_plots();
 
 
 		/** Finalizes event generation and consolidates the event record.
@@ -81,26 +82,17 @@ namespace ColSim {
 
 		/** Simple getters for the cross section and cross section errors.
 		 */
-		inline Double getCrossSection() const { return crossSection; }
-		inline Double getCrossSectionError() const { return crossSectionError; }
+		inline double cross_section() const { return _xs; }
+		inline double cross_section_error() const { return _xs_error; }
 
 		
-		inline const
-		std::vector<std::vector<Double>>&
-		getPlotPoints() const {
-			return plotPoints;
-		}
-
-		inline const
-		std::vector<std::vector<PartonShower::Emission>>&
-		getEmissionRecord() const {
-			return emissionRecord;
-		}
+		inline std::vector<std::vector<double>> const& plot_points() const { return _plot_points; }
+		inline std::vector<std::vector<PartonShower::Emission>> const& emission_record() const { return _emission_record; }
 		
 	private:		
 		/** Helper function to load the corresponding hard process.
 		 */
-		void loadHardProcess(const std::string& processStr);
+		void load_hard_process(std::string const& processStr);
 
 
 		// ----------------------------------------
@@ -111,37 +103,37 @@ namespace ColSim {
 		 *  if the user passed in the @a HARD_PROCESS
 		 *  initialization flag.
 		 */
-		void start_hardProcess();
+		void start_hard_process();
 
 		/** Internal function called from @a start()
 		 *  if the user passed in the @a PARTON_SHOWER
 		 *  initialization flag.
 		 */
-		void start_partonShower();
+		void start_parton_shower();
 
 		/** Internal function called from @a generateEvent()
 		 *  if the user passed in the @a HARD_PROCESS
 		 *  initialization flag.
 		 */
-		Bool generateEvent_hardProcess();
+		bool generate_event_hard_process();
 
 		/** Internal function called from @a generateEvent()
 		 *  if the user passed in the @a PARTON_SHOWER
 		 *  initialization flag.
 		 */
-		Bool generateEvent_partonShower();
+		bool generate_event_parton_shower();
 
 		/** Internal function called from @a generatePlots()
 		 *  if the user passed in the @a HARD_PROCESS
 		 *  initialization flag.
 		 */
-		void generatePlots_hardProcess();
+		void generate_plots_hard_process();
 
 		/** Internal function called from @a generatePlots()
 		 *  if the user passed in the @a PARTON_SHOWER
 		 *  initialization flag.
 		 */
-		void generatePlots_partonShower();
+		void generate_plots_parton_shower();
 
 	};
 	
