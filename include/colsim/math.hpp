@@ -51,13 +51,14 @@ namespace colsim
 	}
 
 	template <MathFunction TMathFunction>
-	double Bisection(TMathFunction func, double min, double max, uint numEvals, double precision, void* params)
+	double Bisection(TMathFunction func, double min, double max, uint num_evals, double precision, void* params)
 	{
-		int count = 0;
+		uint count = 0;
 		double range = max - min;
 		double midpoint = std::numeric_limits<double>::max(); // arbitrary large number to obviously indicate error
 		
-		while ((range > precision) && (count < numEvals)) {
+		
+		while ((range > precision) && (count < num_evals)) {
 			midpoint = (min+max)/2.0;
 
 			double funcMin = func(min, params);

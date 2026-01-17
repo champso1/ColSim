@@ -8,7 +8,7 @@
 
 namespace colsim
 {
-	static auto lhapdf_pdf_deleter = [](LHAPDF::PDF* pdf) { delete pdf; };
+	inline auto lhapdf_pdf_deleter = [](LHAPDF::PDF* pdf) { delete pdf; };
 	using lhapdf_pdf_deleter_type = decltype(lhapdf_pdf_deleter);
 
 	struct Settings final
