@@ -15,7 +15,7 @@ int main() {
 	colsim.generate_events(1000000);
 
 	// generate plots
-	// colsim.generatePlots();
+	colsim.generate_plots();
 
 	// stop/deinitialize generation
 	colsim.stop();

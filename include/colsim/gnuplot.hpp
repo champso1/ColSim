@@ -111,7 +111,7 @@ namespace colsim
 
 		
 #define GEN_PLOTTER_SET_FUNC0(name, T)									\
-		inline Plotter& COLSIM_JOIN(set_, name)(T const& name)			\
+		Plotter& COLSIM_JOIN(set_, name)(T const& name)			\
 		{																\
 			COLSIM_JOIN(_,name) = name;									\
 			return *this;												\
@@ -131,7 +131,7 @@ namespace colsim
 		GEN_PLOTTER_SET_FUNC(border_thickness, enum_type)
 		GEN_PLOTTER_SET_FUNC(line_color, enum_type)
 
-		inline Plotter& setOutputFile(std::string const& file_name, uint output_file_type=AUTO)
+		Plotter& setOutputFile(std::string const& file_name, uint output_file_type=AUTO)
 		{
 			if (output_file_type == AUTO) {
 				std::string::size_type dot_pos = file_name.find(".");
@@ -203,8 +203,8 @@ namespace colsim
 
 			std::string terminal_type{};
 			switch (_output_file_type) {
-				case PNG: terminal_type = "pngcairo"; break;
-				case PDF: terminal_type = "pdfcairo"; break;
+				case PNG: terminal_type = "png"; break;
+				case PDF: terminal_type = "pdf"; break;
 				case AUTO:
 				default: log(LOG_ERROR, "Plotter::save()", "Invalid output file/terminal type.");
 			}

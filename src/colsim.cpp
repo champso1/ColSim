@@ -9,6 +9,7 @@
 #include "colsim/settings.hpp"
 #include "colsim/phase_space.hpp"
 #include "colsim/math.hpp"
+#include "colsim/gnuplot.hpp"
 
 namespace colsim
 {
@@ -188,17 +189,18 @@ namespace colsim
 		log(LOG_INFO, "ColSimMain::start_parton_shower()", "Starting parton shower event generation.");
 	}
 
-	void ColSimMain::generate_plots_hard_process()
-	{}
 	void ColSimMain::generate_plots_parton_shower()
 	{}
 
-	/*
-	void ColSimMain::generate_plots_hard_process() {
+	
+	void ColSimMain::generate_plots_hard_process()
+	{
 		log(LOG_INFO, "", "Generating plots...");
 
 		PhaseSpace& phase_space = _hard_process->get_phase_space();
 
+		Plotter<double> plot;
+		
 		Gnuplot plot;
 		plot.setHistInfo(phase_space.getMins(),
 						 phase_space.getMaxes(),
@@ -218,7 +220,7 @@ namespace colsim
 
 		LOGGER.logMessage("Plots saved! Check the 'plots' directory to view them.");
 	}
-	*/
+	
 
 	
 	/*

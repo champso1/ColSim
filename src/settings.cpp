@@ -13,7 +13,7 @@
 namespace colsim
 {
 
-	bool Settings::does_key_exist(Settings::value_type::const_iterator it, std::string const& key) {
+	bool Settings::does_key_exist(Settings::value_type::const_iterator& it, std::string const& key) {
 		bool found;
 		it = settings.find(key);
 		found = (it != settings.end());

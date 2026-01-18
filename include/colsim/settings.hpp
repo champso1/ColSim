@@ -10,6 +10,7 @@ namespace colsim
 {
 	inline auto lhapdf_pdf_deleter = [](LHAPDF::PDF* pdf) { delete pdf; };
 	using lhapdf_pdf_deleter_type = decltype(lhapdf_pdf_deleter);
+	using lhapdf_pdf_type = std::unique_ptr<LHAPDF::PDF, lhapdf_pdf_deleter_type>;
 
 	struct Settings final
 	{
@@ -19,7 +20,7 @@ namespace colsim
 		double ecm, s;
 		std::string pdf_name{};
 		int pdf_mem;
-		std::unique_ptr<LHAPDF::PDF, lhapdf_pdf_deleter_type> pdf{nullptr, lhapdf_pdf_deleter};
+	    lhapdf_pdf_type pdf{nullptr, lhapdf_pdf_deleter};
 
 		// hard scattering settings
 		std::string process{};
@@ -42,7 +43,7 @@ namespace colsim
 		Settings() = default;
 		~Settings() = default;
 
-		void load_config_file(std::string const& fileStream);
+		void load_config_file(std::string const& config_file_path);
 		void read_string(std::string const& str);
 
 		static Settings& instance()
@@ -52,7 +53,7 @@ namespace colsim
 		}
 
 	private:
-		bool does_key_exist(value_type::const_iterator it, std::string const& key);
+		bool does_key_exist(value_type::const_iterator& it, std::string const& key);
 	};
 
 #define SETTINGS Settings::instance()
