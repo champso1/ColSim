@@ -1,5 +1,7 @@
 #include "colsim/alphas.hpp"
 
+#include <numbers>
+
 namespace colsim
 {
     
@@ -22,6 +24,7 @@ namespace colsim
     double AlphaS::calc_alphas_LO(double t) const {
 		// determine reference scale given t
 		
+
         double tref, asref;
         double b0;
 
@@ -107,7 +110,7 @@ namespace colsim
 		double scale = alphas_scale(t, z);
 		if (scale < SETTINGS.evol_energy_cutoff)
 			scale = SETTINGS.evol_energy_cutoff;
-		return calc_alphas(t)/(2.0*M_PI);
+		return calc_alphas(t)/(2.0*std::numbers::pi);
 		
 	}
 

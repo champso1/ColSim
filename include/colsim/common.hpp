@@ -2,6 +2,7 @@
 #define __COMMON_HPP
 
 #include <filesystem>
+#include <numbers>
 
 #define COLSIM_JOIN0(a, b) a ## b
 #define COLSIM_JOIN(a, b) COLSIM_JOIN0(a, b)
@@ -35,7 +36,7 @@ namespace colsim
     constexpr double MAGIC_FACTOR    = 3.893793721e8;   // conversion factor
     constexpr double FERMI_CONSTANT  = 1.1663788e-5;
     constexpr double WEINBERG_ANGLE  = 0.222246;
-    constexpr double PI              = 3.141592653;
+    constexpr double PI              = std::numbers::pi;
 	
 	// squares of some of the above values
 	constexpr double Z_MASS_2 = Z_MASS*Z_MASS;

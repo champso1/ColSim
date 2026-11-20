@@ -11,7 +11,6 @@ set(sources
   src/fourvector.cpp
   src/hard_process.cpp
   src/math.cpp
-  src/parton_shower.cpp
   src/phase_space.cpp
   src/settings.cpp)
 set(headers
@@ -22,12 +21,11 @@ set(headers
   include/colsim/fourvector.hpp
   include/colsim/gnuplot.hpp
   include/colsim/hard_process.hpp
+  include/colsim/logger.hpp
   include/colsim/math.hpp
   include/colsim/particle.hpp
-  include/colsim/parton_shower.hpp
   include/colsim/phase_space.hpp
-  include/colsim/settings.hpp
-  include/colsim/utils.hpp)
+  include/colsim/settings.hpp)
 
 add_library(colsim STATIC)
 target_sources(colsim PRIVATE ${sources})

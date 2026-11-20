@@ -5,7 +5,7 @@
 
 #include "LHAPDF/LHAPDF.h"
 
-#include "colsim/utils.hpp"
+#include "colsim/logger.hpp"
 #include "colsim/settings.hpp"
 #include "colsim/math.hpp"
 #include "colsim/common.hpp"
@@ -204,7 +204,7 @@ namespace colsim
 		// boost parameter
 		double beta = (x2-x1)/(x2+x1);
 		// more phase space points
-		double phi = rand_double()*2.0*M_PI;
+		double phi = rand_double()*2.0*PI;
 		double sinPhi = std::sin(phi);
 		double cosPhi = std::cos(phi);
 		double sinTheta = std::sqrt(1.0 - cos_theta*cos_theta);
@@ -238,7 +238,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (4*M_PI*alpha_s*alpha_s)/(9.0*s*s) * ((s*s +  u*u)/(t*t));
+		return (4*PI*alpha_s*alpha_s)/(9.0*s*s) * ((s*s +  u*u)/(t*t));
 	}
 	double PP2Jets::qqprimebar2qqprimebar(double eta3, double eta4, double E_t, double alpha_s) {
 		return qqprime2qqprime(eta3, eta4, E_t, alpha_s);
@@ -251,7 +251,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (4.0*M_PI*alpha_s*alpha_s)/(9.0*s*s) * ((s*s + u*u)/(t*t) + (t*t + u*u)/(s*s) - (2.0/3.0)*((s*s)/(u*t)));
+		return (4.0*PI*alpha_s*alpha_s)/(9.0*s*s) * ((s*s + u*u)/(t*t) + (t*t + u*u)/(s*s) - (2.0/3.0)*((s*s)/(u*t)));
 	}
 
 	double PP2Jets::qqbar2qprimeqprimebar(double eta3, double eta4, double E_t, double alpha_s) {
@@ -261,7 +261,7 @@ namespace colsim
 		double u = calc_uh(eta_star, E_t);
 
 
-		return (4.0*M_PI*alpha_s*alpha_s)/(9.0*s*s) * ((t*t + u*u)/(s*s));
+		return (4.0*PI*alpha_s*alpha_s)/(9.0*s*s) * ((t*t + u*u)/(s*s));
 	}
 
 
@@ -271,7 +271,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (9.0*M_PI*alpha_s*alpha_s) / (2.0 * s*s) * (3 - (t*u)/(s*s) - (s*u)/(t*t) - (s*t)/(u*u));
+		return (9.0*PI*alpha_s*alpha_s) / (2.0 * s*s) * (3 - (t*u)/(s*s) - (s*u)/(t*t) - (s*t)/(u*u));
     
 	}
 	double PP2Jets::qqbar2gg(double eta3, double eta4, double E_t, double alpha_s) {
@@ -280,7 +280,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (32.0*M_PI*alpha_s*alpha_s)/(27.0*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
+		return (32.0*PI*alpha_s*alpha_s)/(27.0*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
 	}
 	double PP2Jets::gg2qqbar(double eta3, double eta4, double E_t, double alpha_s) {
 		double eta_star = calc_eta_star(eta3, eta4);
@@ -288,7 +288,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (M_PI * alpha_s*alpha_s)/(6*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
+		return (PI * alpha_s*alpha_s)/(6*s*s) * (u/t + t/u - (9.0/4.0)*((t*t + u*u)/(s*s)));
 	}
 
 	double PP2Jets::qg2qg(double eta3, double eta4, double E_t, double alpha_s) {
@@ -297,7 +297,7 @@ namespace colsim
 		double t = calc_th(eta_star, E_t);
 		double u = calc_uh(eta_star, E_t);
 
-		return (4.0*M_PI*alpha_s*alpha_s)/(9*s*s) * (-u/s - s/u + (9.0/4.0)*((s*s + u*u)/(t*t)));
+		return (4.0*PI*alpha_s*alpha_s)/(9*s*s) * (-u/s - s/u + (9.0/4.0)*((s*s + u*u)/(t*t)));
 	}
 
 
@@ -321,7 +321,7 @@ namespace colsim
 		for (uint i=0; i<pids.size(); i++) {
 			for (int j=i+1; i<pids.size(); i++) {
 				total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[j], x2, S)
-					* (1.0/M_PI)*qqprime2qqprime(eta3, _eta4, Et, alphaS);
+					* (1.0/PI)*qqprime2qqprime(eta3, _eta4, Et, alphaS);
 			}
 		}
 		total += total_qqprime2qqprime;
@@ -330,7 +330,7 @@ namespace colsim
 		double total_qq2qq = 0.0;
 		for (uint i=0; i<pids.size(); i++) {
 			total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[i], x2, S)
-				* (1.0/M_PI)*qq2qq(eta3, _eta4, Et, alphaS);
+				* (1.0/PI)*qq2qq(eta3, _eta4, Et, alphaS);
 		}
 		total += total_qq2qq;
 
@@ -338,7 +338,7 @@ namespace colsim
 		double total_qqbar2qprimeqprimebar = 0.0;
 		for (uint i=0; i<pids.size(); i++) {
 			total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[i], x2, S)
-				* (1.0/M_PI)*qqbar2qprimeqprimebar(eta3, _eta4, Et, alphaS);
+				* (1.0/PI)*qqbar2qprimeqprimebar(eta3, _eta4, Et, alphaS);
 		}
 		total += total_qqbar2qprimeqprimebar;
 
@@ -350,7 +350,7 @@ namespace colsim
 		double total_qqbar2gg = 0.0;
 		for (uint i=0; i<pids.size(); i++) {
 			total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[i], x2, S)
-				* (1.0/M_PI)*qqbar2gg(eta3, _eta4, Et, alphaS);
+				* (1.0/PI)*qqbar2gg(eta3, _eta4, Et, alphaS);
 		}
 		total += total_qqbar2gg;
 
@@ -358,7 +358,7 @@ namespace colsim
 		double total_gg2qqbar = 0.0;
 		for (uint i=0; i<pids.size(); i++) {
 			total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[i], x2, S)
-				* (1.0/M_PI)*gg2qqbar(eta3, _eta4, Et, alphaS);
+				* (1.0/PI)*gg2qqbar(eta3, _eta4, Et, alphaS);
 		}
 		total += total_gg2qqbar;
 
@@ -366,7 +366,7 @@ namespace colsim
 		double total_qg2qg = 0.0;
 		for (uint i=0; i<pids.size(); i++) {
 			total_qqprime2qqprime += pdf.xfxQ2(pids[i], x1, S)*pdf.xfxQ2(pids[i], x2, S)
-				* (1.0/M_PI)*qg2qg(eta3, _eta4, Et, alphaS);
+				* (1.0/PI)*qg2qg(eta3, _eta4, Et, alphaS);
 		}
 		total += 2*total_qg2qg;
 

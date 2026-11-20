@@ -1,3 +1,9 @@
+CompileFlags:
+  Add: [--driver-mode=cl, /std:c++latest, /EHsc, /IC:\Users\Casey\Documents\programs\LHAPDF-win\install\include, /IC:\Users\Casey\Documents\programs\ColSim\include]
+  CompilationDatabase: None
+  Compiler: clang-cl.exe
+  BuiltinHeaders: QueryDriver
+
 InlayHints:
   Enabled: true
   ParameterNames: false

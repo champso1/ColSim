@@ -5,7 +5,7 @@
 #include <random>
 #include <type_traits>
 
-#include "colsim/utils.hpp"
+#include "colsim/logger.hpp"
 
 namespace colsim
 {
@@ -45,7 +45,7 @@ namespace colsim
 		}
 
 		if (n >= numEvals)
-			log(LOG_ERROR, "NewtonRaphson():", "Failed to converge.");
+			log(LOG_ERROR, "NewtonRaphson():", "Failed to converge after {} evals (limit {}).", n, numEvals);
 			
 	    return x0;
 	}

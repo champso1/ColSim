@@ -1,6 +1,8 @@
 #include "colsim/fourvector.hpp"
 
-#include <cstdlib>
+#include "colsim/common.hpp"
+
+#include <initializer_list>
 
 namespace colsim
 {

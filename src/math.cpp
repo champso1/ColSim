@@ -1,7 +1,4 @@
 #include "colsim/math.hpp"
-#include "colsim/utils.hpp"
-
-#include <cmath>
 
 namespace colsim
 {

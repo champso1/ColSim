@@ -2,7 +2,7 @@
 #define __GNUPLOT_HPP
 
 #include "colsim/common.hpp"
-#include "colsim/utils.hpp"
+#include "colsim/logger.hpp"
 
 #include <vector>
 #include <string>

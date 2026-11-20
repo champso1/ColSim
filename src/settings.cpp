@@ -1,5 +1,6 @@
 #include "colsim/settings.hpp"
-#include "colsim/utils.hpp"
+
+#include "colsim/logger.hpp"
 
 #include <cmath>
 #include <ranges>

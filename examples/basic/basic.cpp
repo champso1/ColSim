@@ -1,24 +1,20 @@
 #include "colsim/colsim.hpp"
 using namespace colsim;
-using namespace std;
 
 int main() {
 	// create the main object
-	ColSimMain colsim;
-
-	colsim.init(ColSimMain::HARD_SCATTERING);
+	ColSimMain colsim(ColSimMain::InitFlag::HARD_SCATTERING);
 
 	// start/initialize generation
+	// calculates cross section and other stuff
+	// in preparation for event generation
 	colsim.start();
 
 	// generate events
-	colsim.generate_events(1000000);
+	auto events = colsim.generate_events(1000000);
 
 	// generate plots
-	colsim.generate_plots();
+	// colsim.generate_plots();
 
-	// stop/deinitialize generation
-	colsim.stop();
-    
    	return 0;
 }

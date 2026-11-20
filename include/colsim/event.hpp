@@ -11,6 +11,7 @@ namespace colsim
 	class Event
 	{
 	private:
+		bool _valid{false};
 		double _weight;
 		std::vector<Particle> _particles{};
 		double _Q, _cos_theta, _y;
@@ -28,6 +29,8 @@ namespace colsim
 		inline double cos_theta() const { return _cos_theta; }
 		inline double y() const { return _y; }
 		inline std::vector<Particle> const& particles() const { return _particles; }
+
+		inline bool valid() const { return _valid; }
 	};
 
 	// I am so lazy lmao
