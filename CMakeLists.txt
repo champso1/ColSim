@@ -6,28 +6,9 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(sources
-  src/alphas.cpp
-  src/colsim.cpp
-  src/fourvector.cpp
-  src/hard_process.cpp
-  src/math.cpp
-  src/parton_shower.cpp
-  src/phase_space.cpp
-  src/settings.cpp)
+  src/colsim.cpp)
 set(headers
-  include/colsim/alphas.hpp
-  include/colsim/colsim.hpp
-  include/colsim/common.hpp
-  include/colsim/event.hpp
-  include/colsim/fourvector.hpp
-  include/colsim/gnuplot.hpp
-  include/colsim/hard_process.hpp
-  include/colsim/math.hpp
-  include/colsim/particle.hpp
-  include/colsim/parton_shower.hpp
-  include/colsim/phase_space.hpp
-  include/colsim/settings.hpp
-  include/colsim/utils.hpp)
+  include/colsim/colsim.hpp)
 
 add_library(colsim STATIC)
 target_sources(colsim PRIVATE ${sources})
